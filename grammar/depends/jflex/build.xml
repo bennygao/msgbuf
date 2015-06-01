@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="JFLex" default="jar" basedir=".">
+	<description>JFlex Project</description>
+
+	<property name="src.dir" location="./src"/>
+	<property name="classes.dir" location="/classes"/>
+	<property name="lib.dir" location="c:/workspace/calibur/CaliburDemoGame/lib" />
+	<property name="jflex.jar" location="../jflex.jar"/>
+
+	<path id="project.classpath">
+        <fileset dir="${lib.dir}">
+          <include name="**/*.jar"/>
+        </fileset>
+	</path>
+
+ 	<target name="prepare"
+			description="Preparing environment">
+        <mkdir dir="${classes.dir}"/>
+    </target>
+
+	<target name="compile" depends="prepare"
+			description="Compile the Java sources to classes">
+		<javac
+			srcdir="${src.dir}"
+			destdir="${classes.dir}"
+			encoding="UTF-8"
+			source="1.6"
+			target="1.6"
+			debug="on">
+			<classpath>
+				<path refid="project.classpath"/>
+			</classpath>
+		</javac>
+	</target>
+
+ 	<target name="jar" depends="compile">
+		<jar jarfile="${jflex.jar}">
+			<fileset dir="${classes.dir}" includes="**/*.class"/>
+			<fileset dir="${src.dir}" includes="**/*.txt,**/*.cup,**/*.flex,**/*.properties,**/*.default,**/*.nested" />
+		</jar>
+    </target>	
+
+	<target name="clean" description="Delete all generated files">
+	    <delete dir="${classes.dir}" />
+		<delete file="${jflex.jar}" />
+	</target>
+</project>

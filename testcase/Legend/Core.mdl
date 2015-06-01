@@ -1,0 +1,493 @@
+/**
+ * 游戏核心消息定义
+ */
+
+/**
+ * 公共的提示文字
+ */
+message Push0 {	
+	String msg;
+}
+
+/**
+ * 玩家角色进入游戏
+ */
+message Req1001 {
+
+	/** 通行证ID*/
+	String passportId;	
+	/** 会话ID*/
+	String sessionId;	
+	/** 要登入的角色ID*/
+	long roleId;		
+	/** 玩家的视野宽度 */
+	int viewWidth;
+	/** 玩家的视野高度 */
+	int viewHeight;
+}
+
+/**
+ *
+ */
+message Rsp1001 {		
+	/** 玩家登录的角色的详细信息 */
+	GamePlayer player;	
+	/** 快捷栏格子列表 */
+	List<Folder> folders;
+}
+
+/**
+ * 可用的人物职业
+ */
+message Rsp1004 {
+	/** 可用的职业信息*/
+	List<ProfessionInfo> professions;
+}
+
+message Push1010 {
+	// 当前PK值
+	int pkValue;
+	// 剩余可清洗次数
+	int washTime;
+	// 每次可清洗的PK值
+	int onceWashPkValue;
+	// 每次可清洗所需的钱数
+	int onceWashMoney;
+}
+
+/**
+ * 客户端通知服务器玩家开始向某个方向移动。
+ * 只在持绪行走时才发送
+ * 无回复。触发服务器计算同屏
+ */
+message Req1102 {
+	/** 0:上、1:左上、2:左、3:左下、4下:、5:右下、6:右、7:右上*/
+	byte direction;	
+	/** 触摸点*/
+	short touchX;
+	short touchY;
+}
+
+/**
+ * 玩家在移动过程中，客户端定时发送玩家位置给服务器，
+ * 服务器同步给其他同屏玩家。
+ */
+message Req1103 {
+	/** 玩家的位置坐标 */
+	short x;
+	short y;
+}
+
+/**
+ * 玩家在客户端地图中从停止在某格子时，客户端通知服务器玩家停止的坐标。
+ */
+message Req1104 {	
+	/** 停止的原因 0 主动停止 1 触碰到不可通过的块*/
+	byte cause;
+	/** 玩家停止的坐标 */
+	short x;
+	short y;
+}
+
+/**
+ * 服务器通知客户端同屏玩家位置状态改变 
+ */
+message Push1105 {		
+	/** 改变状态的玩家ID */
+	long playerId;	
+	/** 玩家面向的方向 0:上、1:左上、2:左、3:左下、4下:、5:右下、6:右、7:右上*/
+	byte face;		
+	/** 玩家移动状态 0:静止 1:移动*/
+	byte moveState;	
+	/** 移动触摸点 移动状态为1时有效*/
+	short touchX;
+	short touchY;	
+	/** 该玩家是否新进入视野玩家标志，1:新进入 0:同屏玩家 */
+	byte newEnter;		
+	/** 玩家角色的基本信息，当不是新进入玩家时该项为空 */
+	ActiveRole activeRole;	
+	/** 玩家角色的位置，当不是新进入玩家时该项为空 */
+	short x;
+	short y;		
+	/** 召唤物主人ID */
+	long ownerId;
+	/** 角色头顶上方的图标 0=正常显示 1=申组   2=邀组*/
+	byte flag;
+}
+
+// 玩家进入到新地图
+message Push1106 {
+	/** 进入到的地图ID*/
+	String mapId;
+	/** 进入后的位置*/
+	short x;
+	short y;
+	/** 地图中的功能性NPC列表*/
+	List<FunctionRole> functionNpcs;
+	/** 地图名*/
+	String mapName;
+	/** 地图类型 1 pvp 2 pve 3 城市*/
+	byte mapType;	
+	/** 当前所在频道*/
+	byte channel;
+}
+
+/**
+ * 通知客户端指定的玩家已离开视野
+ */
+message Push1107 {
+	/** 离开视野玩家ID*/
+	long playerId;
+}
+
+/**
+ * 通知客户端指定的玩家已离开
+ */
+message Push1108 {
+	/** 退出玩家ID*/
+	long playerId;
+}
+
+/**
+ * 通知客户端指定的角色向特定目标移动
+ */
+message Push1109 {
+	/** 触发移动的角色ID*/
+	long roleId;
+	/** 移动的方式 0 瞬移，1 正常移动, 2 野蛮冲撞，3 狮子吼，4 抗拒火环*/
+	byte moveMode;
+	List<RolePosition> rolePositions;	
+}
+
+/**
+ * npc任务状态变化
+ */
+message Push1110 {
+		/** 0=普通  1=任务可授予 2=有任务可提交*/
+   byte type;
+   long npcId;
+}
+
+/**
+ * 切换频道 
+ */
+message Req1111 {
+	// 要去的频道ID
+	byte idx;
+}
+
+message Rsp1111 {
+	// 要去的频道ID
+	byte idx;
+	// 进入的坐标
+	short x;
+	short y;
+}
+
+/**
+ * 装卸技能快捷栏
+ */
+message Req1122 {
+  /**0装配技能   1卸载技能 */
+  byte flag;
+	/** 技能ID*/
+	String skillId;	
+	/** 要装配或者卸载的快捷栏索引，0为默认技能*/
+	byte shortcut;
+}
+
+/**
+ * 指定的技能改变了 升级了  学会了
+ */
+message Push1124 {
+	FightSkill skill;
+}
+
+/**
+ * 角色技能信息
+ */
+message Push1125 {
+	/** 角色所属职业的所有技能*/
+	List<SkillBase> professionSkills;	
+	/** 角色所有已学会的技能*/
+	List<FightSkill> fightSkills;
+}
+
+/**
+ * 游戏中的功能弹板
+ */
+message Push1127 {
+	/** 提示文字 */
+	String text;
+	/** 对齐方式 0 水平 1 垂直*/
+	byte align;
+	/** 选项列表 */
+	List<Option> options;
+	/** 显示时间，倒记时，单位秒，为0不需要设置倒计时*/
+	byte time;
+	/** 默认选项ID*/
+	byte defaultId;
+}
+
+/**
+ * 回复客户端选择的选项
+ */
+message Req1128 {
+	byte id;
+}
+
+/**
+ * 请求与指定的NPC交互
+ */
+message Req1129 {
+	String npcId;
+}
+
+/**
+ * 回复交互NPC信息
+ */
+message Rsp1129 {
+	/** 返回NPC对话主界面*/
+	NpcDialog npcDialog;	
+}
+
+/**
+ * 选择了NPC界面中的功能
+ */
+message Req1130 {
+	byte functionId;	
+}
+
+/**
+  * 攻击目标
+  */
+message Req1201 {
+	/** 目标ID*/
+	long targetId;
+	/** 角色面向的方向 0:上、1:左上、2:左、3:左下、4下:、5:右下、6:右、7:右上*/
+	byte face;
+	/** 目标坐标*/
+	short x;
+	short y;
+	/** 技能：对应技能栏编号*/
+	short number;	
+}
+
+/**
+ * 战斗中角色出招信息
+ */
+message Push1202 {
+	/** 出招者 */
+	long source;
+	/** 技能类型 0 物理 1 魔法*/
+	byte skillType;	
+	/** 出招展示效果*/
+	String showEffect;	
+	/** 是否是暴击 1 是 0 不是*/
+	byte doubleAttack;	
+	/** 对象出招后的体力值 */
+	int attackerHp;
+	/** 对象出招后的精力值 */
+	int attackerMp;	
+	/** 锁定方式 1 直接选取，2目标范围地块，3 自身周围地块，4 自身前方选取，5 自身 */
+	byte lockMode;
+	/** 攻击的目的坐标*/
+	short x;
+	short y;
+	/** 接招人，可能为空*/
+	List<Defender> defenders;
+}
+
+/**
+	* 角色复活
+	*/
+message Push1203{
+	long roleId;
+	int hp;
+	int mp;
+	String map;
+	short x;
+	short y;
+}
+
+/**
+ * 角色状态改变
+ */
+message Push1204 {
+	long roleId;	
+	int hp;	
+	int mp;
+	/** 最大体力值 */
+	int maxhp;
+	/** 最大精力值 */
+	int maxmp;
+	// 角色新的资质属性(null表示无变化)
+	Aptitude aptitude;	
+	/** 获得的状态*/ 
+	short status;
+}
+
+/**
+ * 角色复活
+ */
+message Push1209 {
+	
+	long roleId;
+	
+	int hp;
+	
+	int mp;
+	
+	short x;
+	
+	short y;
+	
+	/** 获得的状态*/ 
+	short status;
+}
+
+/**
+ * 角色变身（诱惑之光将怪物召唤为宝宝） 
+ */
+message Push1205 {		
+	/** 旧的角色ID */
+	long oldRoleId;
+	/** 新的角色ID */
+	long newRoleId;
+	/** 角色面向的方向 0:上、1:左上、2:左、3:左下、4下:、5:右下、6:右、7:右上*/
+	byte face;
+	/** 宝宝的主人ID */
+	long ownerId;
+	/** 新角色的基本信息 */
+	ActiveRole activeRole;	
+	/** 新角色的位置 */
+	short x;
+	short y;
+}
+
+/**
+ * 更改宝宝攻击模式
+ */
+message Req1206 {
+	/**  1、攻击 2、跟随 3、休息*/
+	byte petMode;
+}
+
+/**
+ * PK开关的开启/关闭
+ */
+message Req1207 {
+	/** 0 关闭 1 开启*/
+	byte status;
+}
+
+/**
+ * PK开关的开启/关闭
+ */
+message Push1207 {
+	/** 0 关闭 1 开启*/
+	byte status;
+}
+
+/**
+ * PK模式
+ */
+message Push1208 {
+	/** 角色ID*/
+	long roleId;
+	/** 1 主动PK 2 被动 3 不PK*/
+	byte status;
+}
+
+
+/**
+ * 背包中格子列表
+ */
+message Rsp1301 {
+	/** 格子列表 */
+	List<Folder> folders;
+}
+
+/**
+ * 使用物品
+ */
+message Req1302 {
+	/** 1 快捷栏; 2 背包*/
+	byte source;
+	/** 物品位置索引*/
+	short index;
+}
+
+/**
+ * 将背包中的装备穿上
+ */
+message Req1303 {
+	/** 格子ID*/
+	short folderId;
+	/** 要穿着的部位 0 头 1 颈 2 身 3 腰 4 手 5 左腕 6 右腕 7 左指 8 右指 9脚 */
+	byte pob;
+}
+
+/**
+ * 指定部位的装备发生改变
+ */
+message Push1303 {	
+	/** 部位 0 头 1 颈 2 身 3 腰 4 手 5 左腕 6 右腕 7 左指 8 右指 9脚 */
+	byte pob;
+	/** 穿着的装备 卸下装备时为null*/
+	Equipment equipment;
+	/** 当前角色新的属性*/
+	Aptitude aptitude;
+	/** 当前体、精*/
+	int hp;
+	int mp;
+	/** 最大体力值 */
+	int maxhp=3900;
+	/** 最大精力值 */
+	int maxmp=10100;
+}
+
+/**
+ * 当角色换装成功后，通知地图上的其它人
+ */
+message Push1304 {
+	long roleId;
+	/** 换装后的hp,mp*/
+	int hp;
+	int mp;
+	/** 换装后的hp,mp总量*/
+	int maxHp;
+	int maxMp;
+	/** 穿着的部位  0 头 1 颈 2 身 3 腰 4 手 5 左腕 6 右腕 7 左指 8 右指 9脚*/
+	byte pob;
+	/** 人物穿着效果，无为null*/
+	String avatar;
+}
+
+/**
+ * 通知背包中某格子状态改变了
+ */
+message Push1305 {
+	/** 1 快捷栏; 2 背包*/
+	byte source;
+	/** 发生变化的格子*/
+	Folder folder;
+}
+
+/**
+ * 调整道具放置位置
+ */
+message Req1306 {
+	/** 起始位置*/
+	short sourceFolderId;	
+	/** 目的位置*/
+	short targetFolderId;
+}
+
+/**
+ * 卸下指定部位的装备
+ */
+message Req1307 {	
+	/** 部位 0 头 1 颈 2 身 3 腰 4 手 5 左腕 6 右腕 7 左指 8 右指 9脚*/
+	byte pob;
+}

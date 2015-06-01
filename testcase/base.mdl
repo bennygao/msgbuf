@@ -1,0 +1,21 @@
+/*
+ * Message Compiler 测试用例
+ */
+
+/**
+ * 道具
+ */
+message Prop {
+	/** 道具编号 */
+	int id;
+	/** 道具名称 */
+	String name;
+	/** 道具类型 */
+	byte type;
+	/** 道具显示图标编号 */
+	short icon;
+	/** 道具数量 */
+	long quantity;
+	/** 道具图像PNG流 */
+	byte[] image;
+}

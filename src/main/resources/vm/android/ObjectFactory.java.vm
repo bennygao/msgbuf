@@ -1,0 +1,72 @@
+/******************************************************************************
+
+ ******************************************************************************
+ *  !!! 由MessageCompiler自动生成的代码，请不要手工修改内容。
+ *  生成时间: ${createTime}
+ *****************************************************************************/
+
+package ${package};
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import com.snda.mobi.foundation.messagebuffer.MessageBean;
+import com.snda.mobi.foundation.messagebuffer.MessageBeanFactory;
+import com.snda.mobi.foundation.messagebuffer.MessageProcessException;
+import com.snda.mobi.foundation.messagebuffer.NullMessage;
+
+public class ObjectFactory implements MessageBeanFactory {
+	/** 指令编号与MessageBean类的映射关系表 */
+	private Map<Short, Class<? extends MessageBean>> map;
+	/** 需要压缩的指令编号列表 */
+	private Set<Short> zipCommands;
+
+	public ObjectFactory() {
+		map = new HashMap<Short, Class<? extends MessageBean>>();
+#foreach ($command in $mapping.keySet())
+#set ($bean = $mapping.get($command))
+#if ($bean.nullMessage)
+		map.put(new Short((short) ${command}), NullMessage.class);
+#else
+		map.put(new Short((short) ${command}), MB${bean.typeName}.class);
+#end
+#end
+
+		zipCommands = new HashSet<Short>();
+#foreach ($cmdid in $zipCommands)
+		zipCommands.add(new Short((short) $cmdid));
+#end
+	}
+
+	@Override
+	public Class<? extends MessageBean> getBeanClass(short commandId)
+			throws MessageProcessException {
+		Class<? extends MessageBean> mbc = map.get(new Short(commandId));
+		if (mbc == null) {
+			throw new MessageProcessException(
+					"未定义指令编号" + commandId + "与消息的对应关系。");
+		}
+
+		return mbc;
+	}
+
+	@Override
+	public boolean needZip(int commandId) {
+		Short cmdid = new Short((short) commandId);
+		return zipCommands.contains(cmdid);
+	}
+
+	@Override
+	public MessageBean createInstance(Class<? extends MessageBean> clazz)
+			throws Exception {
+		return clazz.newInstance();
+	}
+
+	@Override
+	public Collection<Class<? extends MessageBean>> getAllClasses() {
+		return map.values();
+	}
+}

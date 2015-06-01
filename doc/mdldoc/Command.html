@@ -1,0 +1,737 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>指令消息映射</title>
+<style type="text/css">
+<!--
+body {
+	font-family:"Courier New", Courier, monospace;
+}
+-->
+</style>
+</head>
+
+<body>
+<hr />
+<a name="P0"></a>
+<h1>0</h1>
+<p>
+公共的提示文字<br/>
+</p>
+<p>
+<a href="Message.html#Push0">Push0</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1000"></a>
+<h1>1000</h1>
+<p>
+心跳<br/>
+</p>
+<p>
+NULL&nbsp;
+CSB&nbsp;
+不压缩&nbsp;
+</p>
+
+<a name="N1000"></a>
+<h1>-1000</h1>
+<p>
+心跳<br/>
+</p>
+NULL&nbsp;
+CSB&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1001"></a>
+<h1>1001</h1>
+<p>
+角色进入游戏<br/>
+</p>
+<p>
+<a href="Message.html#Req1001">Req1001</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+<a name="N1001"></a>
+<h1>-1001</h1>
+<p>
+进入游戏时返回角色信息<br/>
+</p>
+<a href="Message.html#Rsp1001">Rsp1001</a>&nbsp;
+S2C&nbsp;
+压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1004"></a>
+<h1>1004</h1>
+<p>
+请求当前可用的职业信息<br/>
+</p>
+<p>
+NULL&nbsp;
+CSB&nbsp;
+不压缩&nbsp;
+</p>
+
+<a name="N1004"></a>
+<h1>-1004</h1>
+<p>
+返回当前可用的职业信息<br/>
+</p>
+<a href="Message.html#Rsp1004">Rsp1004</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1010"></a>
+<h1>-1010</h1>
+<p>
+PK值<br/>
+</p>
+<a href="Message.html#Push1010">Push1010</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1102"></a>
+<h1>1102</h1>
+<p>
+客户端通知服务器玩家开始向某个方向移动。<br/>
+</p>
+<p>
+<a href="Message.html#Req1102">Req1102</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1103"></a>
+<h1>1103</h1>
+<p>
+玩家在移动过程中，客户端定时发送玩家位置给服务器<br/>
+</p>
+<p>
+<a href="Message.html#Req1103">Req1103</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1104"></a>
+<h1>1104</h1>
+<p>
+客户端通知服务器玩家停止<br/>
+</p>
+<p>
+<a href="Message.html#Req1104">Req1104</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+
+<a name="N1105"></a>
+<h1>-1105</h1>
+<p>
+服务器通知客户端同屏玩家位置状态改变<br/>
+</p>
+<a href="Message.html#Push1105">Push1105</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1106"></a>
+<h1>-1106</h1>
+<p>
+玩家切换到新地图<br/>
+</p>
+<a href="Message.html#Push1106">Push1106</a>&nbsp;
+S2C&nbsp;
+压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1107"></a>
+<h1>-1107</h1>
+<p>
+玩家切换到新地图<br/>
+</p>
+<a href="Message.html#Push1107">Push1107</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1108"></a>
+<h1>-1108</h1>
+<p>
+玩家切换到新地图<br/>
+</p>
+<a href="Message.html#Push1108">Push1108</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1109"></a>
+<h1>-1109</h1>
+<p>
+通知客户端指定的角色向特定目标移动<br/>
+</p>
+<a href="Message.html#Push1109">Push1109</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1110"></a>
+<h1>-1110</h1>
+<p>
+地图上NPC状态发生改变<br/>
+</p>
+<a href="Message.html#Push1110">Push1110</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1111"></a>
+<h1>1111</h1>
+<p>
+切换频道<br/>
+</p>
+<p>
+<a href="Message.html#Req1111">Req1111</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+<a name="N1111"></a>
+<h1>-1111</h1>
+<p>
+切换频道<br/>
+</p>
+<a href="Message.html#Rsp1111">Rsp1111</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1122"></a>
+<h1>1122</h1>
+<p>
+技能栏改变申请<br/>
+</p>
+<p>
+<a href="Message.html#Req1122">Req1122</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+
+<a name="N1124"></a>
+<h1>-1124</h1>
+<p>
+指定的技能改变了(学会了，等级提高了)<br/>
+</p>
+<a href="Message.html#Push1124">Push1124</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1125"></a>
+<h1>-1125</h1>
+<p>
+角色技能信息<br/>
+</p>
+<a href="Message.html#Push1125">Push1125</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1127"></a>
+<h1>-1127</h1>
+<p>
+游戏中的功能弹板<br/>
+</p>
+<a href="Message.html#Push1127">Push1127</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1128"></a>
+<h1>1128</h1>
+<p>
+回复客户端选择的选项<br/>
+</p>
+<p>
+<a href="Message.html#Req1128">Req1128</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1129"></a>
+<h1>1129</h1>
+<p>
+回复客户端选择的选项<br/>
+</p>
+<p>
+<a href="Message.html#Req1129">Req1129</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+<a name="N1129"></a>
+<h1>-1129</h1>
+<p>
+回复客户端选择的选项<br/>
+</p>
+<a href="Message.html#Rsp1129">Rsp1129</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1130"></a>
+<h1>1130</h1>
+<p>
+回复客户端选择的选项<br/>
+</p>
+<p>
+<a href="Message.html#Req1130">Req1130</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1201"></a>
+<h1>1201</h1>
+<p>
+攻击目标<br/>
+</p>
+<p>
+<a href="Message.html#Req1201">Req1201</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+
+<a name="N1202"></a>
+<h1>-1202</h1>
+<p>
+角色出招信息<br/>
+</p>
+<a href="Message.html#Push1202">Push1202</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1203"></a>
+<h1>-1203</h1>
+<p>
+角色复活<br/>
+</p>
+<a href="Message.html#Push1203">Push1203</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1204"></a>
+<h1>-1204</h1>
+<p>
+角色状态改变<br/>
+</p>
+<a href="Message.html#Push1204">Push1204</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1205"></a>
+<h1>-1205</h1>
+<p>
+角色变身（诱惑之光将怪物召唤为宝宝）<br/>
+</p>
+<a href="Message.html#Push1205">Push1205</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1206"></a>
+<h1>1206</h1>
+<p>
+更改宝宝攻击模式<br/>
+</p>
+<p>
+<a href="Message.html#Req1206">Req1206</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1207"></a>
+<h1>1207</h1>
+<p>
+更改宝宝攻击模式<br/>
+</p>
+<p>
+<a href="Message.html#Req1207">Req1207</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+<a name="N1207"></a>
+<h1>-1207</h1>
+<p>
+更改宝宝攻击模式<br/>
+</p>
+<a href="Message.html#Push1207">Push1207</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1208"></a>
+<h1>-1208</h1>
+<p>
+更改宝宝攻击模式<br/>
+</p>
+<a href="Message.html#Push1208">Push1208</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1209"></a>
+<h1>-1209</h1>
+<p>
+角色复活<br/>
+</p>
+<a href="Message.html#Push1209">Push1209</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1301"></a>
+<h1>1301</h1>
+<p>
+背包中格子列表<br/>
+</p>
+<p>
+NULL&nbsp;
+CSB&nbsp;
+不压缩&nbsp;
+</p>
+
+<a name="N1301"></a>
+<h1>-1301</h1>
+<p>
+背包中格子列表<br/>
+</p>
+<a href="Message.html#Rsp1301">Rsp1301</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1302"></a>
+<h1>1302</h1>
+<p>
+使用物品<br/>
+</p>
+<p>
+<a href="Message.html#Req1302">Req1302</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1303"></a>
+<h1>1303</h1>
+<p>
+将背包中的装备穿上<br/>
+</p>
+<p>
+<a href="Message.html#Req1303">Req1303</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+<a name="N1303"></a>
+<h1>-1303</h1>
+<p>
+指定部位的装备发生改变<br/>
+</p>
+<a href="Message.html#Push1303">Push1303</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1304"></a>
+<h1>-1304</h1>
+<p>
+当角色换装成功后，通知地图上的其它人<br/>
+</p>
+<a href="Message.html#Push1304">Push1304</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1305"></a>
+<h1>-1305</h1>
+<p>
+通知背包中某格子状态改变了<br/>
+</p>
+<a href="Message.html#Push1305">Push1305</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1306"></a>
+<h1>1306</h1>
+<p>
+调整道具放置位置<br/>
+</p>
+<p>
+<a href="Message.html#Req1306">Req1306</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1307"></a>
+<h1>1307</h1>
+<p>
+卸下指定部位的装备<br/>
+</p>
+<p>
+<a href="Message.html#Req1307">Req1307</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1401"></a>
+<h1>1401</h1>
+<p>
+申组 邀组<br/>
+</p>
+<p>
+<a href="Message.html#Req1401">Req1401</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+
+<a name="N1402"></a>
+<h1>-1402</h1>
+<p>
+通知玩家进入了队伍（发给新进入人）<br/>
+</p>
+<a href="Message.html#Push1402">Push1402</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1403"></a>
+<h1>-1403</h1>
+<p>
+通知组员队中成员变化<br/>
+</p>
+<a href="Message.html#Push1403">Push1403</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1404"></a>
+<h1>-1404</h1>
+<p>
+队中成员的状态有变化<br/>
+</p>
+<a href="Message.html#Push1404">Push1404</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1405"></a>
+<h1>1405</h1>
+<p>
+设置角色或者队伍的属性<br/>
+</p>
+<p>
+<a href="Message.html#Req1405">Req1405</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1406"></a>
+<h1>1406</h1>
+<p>
+踢人  退队 解散 队长移交<br/>
+</p>
+<p>
+<a href="Message.html#Req1406">Req1406</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1407"></a>
+<h1>1407</h1>
+<p>
+通知新队长 队伍属性<br/>
+</p>
+<p>
+<a href="Message.html#Push1407">Push1407</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+<a name="P1408"></a>
+<h1>1408</h1>
+<p>
+查看周围允许组队的队伍或者角色信息<br/>
+</p>
+<p>
+<a href="Message.html#Req1408">Req1408</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+
+<a name="N1409"></a>
+<h1>-1409</h1>
+<p>
+地图中可以组队的队伍回复<br/>
+</p>
+<a href="Message.html#Push1409">Push1409</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P1410"></a>
+<h1>1410</h1>
+<p>
+更改队伍名字<br/>
+</p>
+<p>
+<a href="Message.html#Req1410">Req1410</a>&nbsp;
+C2S&nbsp;
+不压缩&nbsp;
+</p>
+
+
+<hr />
+
+<a name="N1411"></a>
+<h1>-1411</h1>
+<p>
+周围可以组队的角色信息回复<br/>
+</p>
+<a href="Message.html#Push1411">Push1411</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+
+<a name="N1412"></a>
+<h1>-1412</h1>
+<p>
+更改队伍名字回复<br/>
+</p>
+<a href="Message.html#Push1412">Push1412</a>&nbsp;
+S2C&nbsp;
+不压缩&nbsp;
+</p>
+
+<hr />
+<a name="P9999"></a>
+<h1>9999</h1>
+<p>
+客户端回复服务器心跳消息<br/>
+</p>
+<p>
+NULL&nbsp;
+CSB&nbsp;
+不压缩&nbsp;
+</p>
+
+<a name="N9999"></a>
+<h1>-9999</h1>
+<p>
+服务器心跳消息<br/>
+</p>
+NULL&nbsp;
+CSB&nbsp;
+不压缩&nbsp;
+</p>
+
+</body>
+</html>

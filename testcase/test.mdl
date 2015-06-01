@@ -1,0 +1,86 @@
+/*
+ * Message Compiler 测试用例
+ */
+
+import base.mdl;
+/**
+ * 测试所有可能的数据类型
+ */
+message AllType {
+	byte byteValue;
+	byte[] byteArray;
+
+	boolean boolValue;
+	boolean[] boolArray;
+	
+	short shortValue;
+	short[] shortArray;
+	
+	int intValue;
+	int[] intArray;
+	
+	long longValue;
+	long[] longArray;
+	
+	float floatValue;
+	float[] floatArray;
+	
+	double doubleValue;
+	double[] doubleArray;
+	
+	String stringValue;
+	String[] stringArray;
+	
+	Prop prop;
+	List<Prop> propList;
+}
+	
+/**
+ * 玩家背包
+ * 服务器下发玩家背包中的详细物品列表
+ */
+message Backpack {
+	/** 测试ASCII字符串 */
+	String asciiString;
+	/** 
+	 * 测试中文字符串
+         * 多行Javadoc是否OK？
+	 */
+	String chineseString;
+	/** 角色ID */
+	int characterId;
+	/** 背包中的物品列表 */
+	List<Prop> props;
+}
+
+/**
+ * 地图数据
+ */
+message SceneMap {
+	/** 地图编号 */
+	int id;
+	
+	byte[] data;
+	
+	/** 测试单个Bean */
+	Prop prop;
+}
+
+
+// 指令编号与消息格式的映射表
+command_message_map {
+	1000	null;
+	-1000	null;
+	9999	null;
+	-9999	null;
+	
+	2000	CSB	zip	AllType;
+	
+	//  1001: 服务器向客户端发送玩家背包信息
+	1001	S2C	Backpack;
+
+	//  1002: 服务器向客户端发送地图信息
+	1002	S2C SceneMap;
+
+	8888	null;
+}

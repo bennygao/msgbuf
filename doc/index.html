@@ -1,0 +1,508 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>MessageBuffer使用说明</title>
+        <script src="scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script type="text/javascript" src="scripts/XRegExp.js">
+        </script>
+        <!-- XRegExp is bundled with the final shCore.js during build -->
+        <script type="text/javascript" src="scripts/shCore.js">
+        </script>
+        <script type="text/javascript" src="scripts/shBrushJava.js">
+        </script>
+        <script type="text/javascript" src="scripts/shBrushObjectiveC.js">
+        </script>
+        <script type="text/javascript" src="scripts/shBrushBash.js">
+        </script>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css" />
+        <link type="text/css" rel="Stylesheet" href="styles/shThemeEclipse.css" />
+        <link type="text/css" rel="Stylesheet" href="css/doc.css" />
+        <script type="text/javascript" src="scripts/startup.js">
+        </script>
+    </head>
+<body>
+        <div id="container">
+            <div id="header">
+                <h1>MessageBuffer使用说明</h1>
+            </div>
+            <div id="sidebar1">
+                <h1>目录</h1>
+                <!-- end #sidebar1 -->
+            </div>
+            <div id="mainContent">
+                <p>
+                    在开发C/S结构的网络应用时，客户端与服务器之间需要定义应用层报文协议，当流量和带宽不敏感时，可以采用XML、Json等基于可见ascii字符的格式，这样的格式可读性好，serialize和deserialize都比较方便，有很多现成的组件可以完成。使用XML、Json不好的方面是网络传输数据量较大，在移动网络环境时，用户对流量比较敏感，降低流量的使用，利于用户对移动应用的接受程度。 
+                </p>
+                <p>
+                    MessageBuffer是一个定义应用报文协议，并且能够根据协议定义自动生成客户端、服务器打包、解包网络数据源代码的工具，当前支持生成标准J2SE(JDK 5以上)、J2ME、iOS Objective-C和Unity3D C#代码。
+                </p>
+                <p>
+                    MessageBuffer使用二进制binary方式进行serialize和deserialize处理，并可以对数据进行压缩传输。自动生成serialize和deserialize代码，使应用仅需关注逻辑层的处理。
+                </p>
+                <h1>消息定义语言(MDL)</h1>
+                <p>
+                    MDL是MessageBuffer用于定义应用报文协议的描述语言，语法与Java非常相似。在MDL中定义每一个消息实体的内容，下面是MDL的一个示例内容。
+                </p>
+                <p>
+                    <script type="syntaxhighlighter" class="brush: java; highlight: [13, 46, 47, 48, 50]; class-name: 'sourceCode'">
+<![CDATA[
+import base.mdl;
+
+// 通用响应类型
+message CommandResponse {
+	// 错误码
+	int errorCode;
+	
+	// 错误信息
+	string errorMessage;
+}
+
+// 测试所有可能的数据类型
+message AllType extends CommandResponse {
+	byte byteValue;
+	vector<byte> byteVector;
+	byte[] byteArray;
+
+	boolean boolValue;
+	vector<boolean> boolVector;
+	boolean[] boolArray;
+	
+	short shortValue;
+	vector<short> shortVector;
+	short[] shortArray;
+	
+	int intValue;
+	vector<int> intVector;
+	int[] intArray;
+	
+	long longValue;
+	vector<long> longVector;
+	long[] longArray;
+	
+	float floatValue;
+	vector<float> floatVector;
+	float[] floatArray;
+	
+	double doubleValue;
+	vector<double> doubleVector;
+	double[] doubleArray;
+	
+	string stringValue;
+	vector<string> stringVector;
+	string[] stringArray;
+	
+	Prop prop;
+	vector<Prop> propVector;
+	Prop[] propArray;
+	
+	map<int, Prop> folders;
+}
+
+// 指令编号与消息格式的映射表
+command {
+	// 玩家登录游戏服务器
+	 1000	Login;
+	// 玩家登录游戏服务器的结果响应
+	-1000	LoginResponse;
+	
+	// 玩家行走
+	 1001	Walk;
+	
+	// 玩家登出游戏服务器
+	 1002	null;
+	// 玩家登出游戏服务器的结果响应
+	-1002	LogoutResponse;
+	
+	 2000	AllType	compress;
+	-2000	AllType	compress;
+}
+]]>
+                    </script>
+                </p>
+                <p>
+                </p>
+                <h2>基础数据类型</h2>
+                <p>
+                    MDL支持的基本数据类型及其在各实现语言中对应的数据类型如下表所示。
+                </p>
+                <table>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                        <td>
+                            字节数
+                        </td>
+                        <td>
+                            Java(J2SE&amp;J2ME)
+                      </td>
+                        <td>iOS Objective-C(32位) </td>
+                        <td width="33%">C#(Unity)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            byte
+                        </td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            byte
+                        </td>
+                        <td>Byte </td>
+                        <td>byte</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            boolean
+                        </td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            boolean
+                        </td>
+                        <td>BOOL </td>
+                        <td>bool</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            short
+                        </td>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            short
+                        </td>
+                        <td>short </td>
+                        <td>short(Int16)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            int
+                        </td>
+                        <td>
+                            4
+                        </td>
+                        <td>
+                            int
+                        </td>
+                        <td>int </td>
+                        <td>int(Int32)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            long
+                        </td>
+                        <td>
+                            8
+                        </td>
+                        <td>
+                            long
+                        </td>
+                        <td>long long </td>
+                        <td>long(Int64)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            float
+                        </td>
+                        <td>
+                            4
+                        </td>
+                        <td>
+                            float
+                        </td>
+                        <td>float </td>
+                        <td>float(Single)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            double
+                        </td>
+                        <td>
+                            8
+                        </td>
+                        <td>
+                            double
+                        </td>
+                        <td>double </td>
+                        <td>double</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            String
+                        </td>
+                        <td>
+                            N/A
+                        </td>
+                        <td>
+                            String
+                        </td>
+                        <td>NSString </td>
+                        <td>string(String)</td>
+                    </tr>
+                </table>
+      <p><table class="notice">
+                        <tr>
+                            <td>
+                                <img src="icons/notice.png" height="64" weight="64">
+                                </img>
+                            </td>
+                            <td>以上所有编程语言的映射中，在MessageBuffer内部都采用UTF-8编码对字符串(String)类型进行编解码。 </td>
+                        </tr>
+                    </table></p>
+            <h2>message类</h2>
+<p>
+        一个message类可以理解为类似Java中只有属性的一个POJO，这些属性即可以是byte/bool/short/int/long/float/double/string这些基础数据类型，也可以是其他对象类。
+</p>
+			<h3>message类嵌套包含</h3>
+			<p>一个message类中，可以通过单一对象、对象数组、对象vector和map这些方式引用其他message类，如上例中的46-50行所示，当然被引用的message类中，还可以引用其他message类。</p>
+			<h3>继承</h3>
+			<p>一个message类可以继承另外一个message类，MessageBuffer只支持单继承，不支持同时继承多个父类。上例中的AllType类就继承了CommandResponse类。</p>
+                <h2>集合类型</h2>
+                <p>MessageBuffer支持数组、向量(vector)和map三种集合类型。</p>
+                <h3>数组</h3>
+              <p>对于基础数据类型和对象，都支持数组，例如：</p>
+                              <pre class="brush: java;">
+message Demo {
+	int[] intArray;
+	Prop[] propArray;
+}</pre>
+			<p>数组和下面说明的向量(vector)作用基本相同，都用以存储和传送一系列相同类型的数据。略有差异的地方是：</p>
+			<li style="text-indent:-20px">在大部分变成语言标准库的IO库中，read/write都是以字节数组作为缓冲区，用byte[]可以直接作为read/write的缓冲区。</li>
+			<li style="text-indent:-20px">数组在创建的时候必须指定大小，而vector可以动态扩展。</li>
+            <h3>向量(vector)</h3>
+                <p>
+                对于基础数据类型和对象，都支持向量(vector)存储和传送一系列（0...n个）相同类型数据。例如：</p>
+                <pre class="brush: java;">
+message Demo {
+	vector&lt;int&gt; integerVector;
+	vector&lt;Prop&gt; propVector;
+}</pre>
+        <p>向量(vector)与数组的差异主要在于向量可以动态扩展，无需在创建时关注最终元素个数。</p>
+                <h3>map</h3>
+                <p>
+                MessageBuffer支持Key-Value的映射map，Key和Value都可以是基础数据类型或者对象，例如：</p>
+              <p>                	
+              <script type="syntaxhighlighter" class="brush: java; class-name: 'sourceCode'">
+message Demo {
+	// 同场景玩家列表，Key是玩家ID，Value是玩家对象。
+	map&lt;long, Player&gt; scenePlayers;
+	// 玩家任务，Key是任务名字，Value是任务对象。
+	map&lt;string, Mission&gt; missions;
+}
+</script>
+              </p>
+              <h3>集合类型对应各编程语言的具体类型</h3>  
+               <table>
+                    <tr>
+                        <td>&nbsp;
+                          
+                        </td>
+                        <td>
+                            Java(J2SE&amp;J2ME)
+                      </td>
+                        <td>iOS Objective-C(32位) </td>
+                        <td width="33%">C#(Unity)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            数组</td>
+                        <td>
+                            数组</td>
+                        <td>NSMutableArray</td>
+                        <td>数组</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            vector
+                        </td>
+                        <td>java.util.List</td>
+                        <td>NSMutableArray</td>
+                        <td>System.Collections.Generic.IList</td>
+                    </tr>
+                    <tr>
+                        <td>map</td>
+                        <td>
+                            java.util.Map</td>
+                        <td>暂未实现</td>
+                        <td>System.Collections.Generic.IDictionary</td>
+                    </tr>
+                </table>
+              <p>当接收方接收到一个int[]这样的数组，获得数组元素个数是必须的功能，对于Java、C#、Python等动态语言来说，这是现成的。但对于C、Objective-C、C++这样的静态语言来说，语言本身的数组是无法获得其元素个数的，所以必须用其他数据类型进行封装。MessageBuffer对于Objective-C的实现中采用了标准库中的可变数组类NSMutableArray。</p>
+                              <p><table class="notice">
+                        <tr>
+                            <td>
+                                <img src="icons/notice.png" height="64" weight="64">
+                                </img>
+                            </td>
+                            <td>运行时刻，message类对象、数组、vector、map都可以不赋值。不赋值时，对象、数组、列表都将保持缺省的null值，传递到接收方时，接收方会得到null，所以接收方应对接收到的对象、数组、vector、map进行是否为null的检查。</td>
+                        </tr>
+                    </table>
+                </p>
+              <h2>指令编号与消息的映射关系</h2>
+                <p>
+          MessageBuffer设定网络传输的每一个独立消息，都必须有一个整数型指令编号，在上例第52行，用  command关键字开始了指令编号和消息的对应关系，每条映射关系的定义格式为：</p>
+                <p><strong>&lt;指令编号&gt; &lt;消息类型&gt; [compress]</strong></p>
+                <p>
+                    其中尖括号&lt;&gt;代表必填，方括号[]代表可选。
+                </p>
+                <p>
+              <table class="notice">
+                        <tr>
+                            <td>
+                                <img src="icons/notice.png" height="64" weight="64">
+                                </img>
+                            </td>
+                            <td>
+                                实际应用中，很多指令都是请求和响应成对出现的，为了从指令号中能够较清楚地看出这样的关系，建议从客户端发给服务器端的请求用正数的指令号，而从服务器响应给客户端的使用绝对值相同的负数指令号，例如指令1000的响应为-1000。
+                            </td>
+                        </tr>
+              </table>
+                </p>
+            <h3>数据压缩</h3>
+                <p>
+                    compress关键字定义报文进行压缩传输，如果定义了，在网络传输时，会对报文用gzip算法进行压缩，适用于数据量较大的报文。
+                </p>
+                <h3>空消息null</h3>
+                <p>
+                    上例第54行定义了指令编号9999对应的消息是空消息(null)，即仅传递指令编号，没有任何实体消息需要传输。空消息一般用于客户端和服务器之间通知一个事件(指令编号)，没有任何参数。
+                </p>
+                <h2>引用其他MDL文件</h2>
+                <p>
+                	消息定义可以全部写在一个MDL文件中，也可以根据消息的分类，写在多个MDL文件中，例如与角色行走相关的消息定义放在一个MDL中，与交易相关的消息定义放在另外一个MDL中。这种情况下，设定一个MDL为root MDL，在root MDL中用import引用其他MDL文件。例如：
+           	  <pre class="brush: java;">
+import Core.mdl;
+import Model.mdl;
+import Interact.mdl</pre>
+                	在编译生成代码时，MessageCompiler只需指定这个root MDL。
+                </p>
+                <h1>编译MDL生成代码</h1>
+                <p>
+                    编写好MDL文件内容后，保存在文本文件中，就可以用MessageBuffer提供的编译工具MessageCompiler，把MDL编译成为目标语言的源代码。当前MessageCompiler支持编译生成标准Java(JDK 5.0以上)、J2ME代码和Objective-C代码。
+                </p>
+                <p>
+                    MessageCompiler是用Java开发的工具，以一个独立可执行jar包(messagecompiler.jar)的形式发布，要运行MessageCompiler必须首先安装了Java 5.0以上的运行环境。MessageCompiler依赖的其他Java组件都已经打包在一起，除了Java运行环境之外，不需要再安装其他Java组件。
+                </p>
+                <h2>生成标准Java代码</h2>
+                <p>
+                    java -jar &lt;PATH-TO&gt;/messagecompiler.jar -j2se -encoding &lt;Encoding&gt; -srcdir &lt;Dir&gt; -package &lt;Package&gt; &lt;message-define-file&gt;
+              <ul>
+                        <li>
+                            &nbsp;-j2se 指定生成标准Java。
+                        </li>
+                        <li>
+                            &nbsp;-encoding &lt;Encoding&gt; 指定生成源代码的字符编码，建议设为UTF-8，以确保国际化支持。
+                        </li>
+                        <li>
+                            &nbsp;-srcdir &lt;Dir&gt; 指定生成代码存放的目录，一般设为Java工程目录下的src。
+                        </li>
+                        <li>
+                            &nbsp;-package &lt;Package&gt; 指定生成的Java类的package，生成的代码会按照Java的规范，保存到-srcdir指定源代码目录的package路径下。
+                        </li>
+                        <li>
+                            &lt;message-define-file&gt; MDL文件的路径名。
+                        </li>
+              </ul>
+                </p>
+                <p>
+                    例如：<pre class="brush: shell; class-name: 'sourceCode'">
+java -jar d:\tools\MessageBuffer\messagecompiler.jar -j2se -encoding UTF-8 -srcdir d:\workspace\Legend\src -package demo.message d:\workspace\Legend\mdl\test.mdl
+</pre>
+                    运行完成后，会在d:\workspace\Legend\src\demo\message目录下生成一系列的代码，每个message会被生成为一个Java类。
+                </p>
+                <h2>生成J2ME代码</h2>
+                <p>
+                    java -jar &lt;PATH-TO&gt;/messagecompiler.jar -j2me -encoding &lt;Encoding&gt; -srcdir &lt;Dir&gt; -package &lt;Package&gt; &lt;message-define-file&gt;
+              <ul>
+                        <li>
+                            &nbsp;-j2me 指定生成J2ME代码。
+                        </li>
+                        <li>
+                            &nbsp;-encoding &lt;Encoding&gt; 指定生成源代码的字符编码，建议设为UTF-8，以确保国际化支持。
+                        </li>
+                        <li>
+                            &nbsp;-srcdir &lt;Dir&gt; 指定生成代码存放的目录，一般设为Java工程目录下的src。
+                        </li>
+                        <li>
+                            &nbsp;-package &lt;Package&gt; 指定生成的Java类的package，生成的代码会按照Java的规范，保存到-srcdir指定源代码目录的package路径下。
+                        </li>
+                        <li>
+                            &lt;message-define-file&gt; MDL文件的路径名。
+                        </li>
+              </ul>
+                </p>
+                <p>
+                    例如：<pre class="brush: shell; class-name: 'sourceCode'">
+java -jar d:\tools\MessageBuffer\messagecompiler.jar -j2me -encoding UTF-8 -srcdir d:\workspace\Legend\src -package demo.message d:\workspace\Legend\mdl\test.mdl
+</pre>
+                    运行完成后，会在d:\workspace\Legend\src\demo\message目录下生成一个MessageBuffer.java文件，所有的处理都在这一个类中完成。
+                </p>
+                <h2>生成Objective-C代码</h2>
+                <p>
+                    java -jar &lt;PATH-TO&gt;/messagecompiler.jar -objc -encoding &lt;Encoding&gt; -srcdir &lt;Dir&gt; &lt;message-define-file&gt;
+              <ul>
+                        <li>
+                            &nbsp;-objc 指定生成Objective-C代码。
+                        </li>
+                        <li>
+                            &nbsp;-encoding &lt;Encoding&gt; 指定生成源代码的字符编码，建议设为UTF-8，以确保国际化支持。
+                        </li>
+                        <li>
+                            &nbsp;-srcdir &lt;Dir&gt; 指定生成代码存放的目录。
+                        </li>
+                        <li>
+                            &lt;message-define-file&gt; MDL文件的路径名。
+                        </li>
+              </ul>
+                </p>
+                <p>
+                    例如：<pre class="brush: shell;">
+java -jar d:\tools\MessageBuffer\messagecompiler.jar -objc -encoding UTF-8 -srcdir d:\workspace\Legend\src d:\workspace\Legend\mdl\test.mdl
+</pre>
+                    <p>
+                        运行完成后，会在d:\workspace\Legend\src目录下生成一个msgbuf.h头文件和一个msgbuf.m类定义文件，每一个消息都被定义为一个Objective-C的class。
+                    </p>
+                    <p>
+                        对于《悍将传世》项目使用socket和MessageBuffer与服务器进行通讯的代码已经编制好，详细请阅读<a href="ObjcSocketEngine.html">Object-C中使用MessageBuffer</a>
+                    </p>
+                    <h2>生成MDL的JavaDoc文档</h2>
+                    <p>
+                        java -jar &lt;PATH-TO&gt;/messagecompiler.jar -doc -encoding &lt;Encoding&gt; -outdir &lt;Dir&gt; &lt;message-define-file&gt;
+              <ul>
+                            <li>
+                                &nbsp;-doc 指定生成MDL的JavaDoc文档。
+                            </li>
+                            <li>
+                                &nbsp;-encoding &lt;Encoding&gt; 指定生成源代码的字符编码，例如UTF-8、GB2312。
+                            </li>
+                            <li>
+                                &nbsp;-outdir &lt;Dir&gt; 指定生成HTML文档存放的目录。
+                            </li>
+                            <li>
+                                &lt;message-define-file&gt; MDL文件的路径名。
+                            </li>
+              </ul>
+                    </p>
+                    <p>
+                    例如：<pre class="brush: shell;">
+java -jar d:\tools\MessageBuffer\messagecompiler.jar -doc -encoding UTF-8 -outdir d:\workspace\Legend\doc d:\workspace\Legend\mdl\test.mdl
+</pre>
+                    <p>
+                        运行完成后，会在d:\workspace\Legend\doc目录下生成一系列HTML文档，用浏览器打开index.html就可以看到MDL的文档。这里是一个生成的<a href="mdldoc/index.html">《悍将传世》MDL文档</a>。
+                    </p>
+          </div>
+                    <div id="footer">
+                        <p>
+                            Copyright © 2011 JoyStudio.
+                        </p>
+                        <!-- end #footer -->
+                    </div>
+                    <!-- end #container -->
+                </div>
+                </body>
+            </html>

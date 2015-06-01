@@ -1,0 +1,1446 @@
+/******************************************************************************
+ *
+ ******************************************************************************
+ *  !!! 由MessageCompiler自动生成的代码，请不要手工修改内容。
+ *  生成时间: ${createTime}
+ *****************************************************************************/
+#import "msgbuf.h"
+
+const static Byte MB_NULL = -1;
+const static Byte MB_NOT_NULL = 0;
+const static Byte MB_TRUE = -1;
+const static Byte MB_FALSE = 0;
+const static NSUInteger BUFFER_TRUNC_SIZE = 1024;
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of NSData (NSDataExtension)
+// Source from URL: // http://www.cocoadev.com/index.pl?NSDataCategory
+///////////////////////////////////////////////////////////////////////////////
+@implementation NSData (NSDataExtension)
+
+- (NSData *)zlibInflate {
+	if ([self length] == 0) {
+        return self;
+    }
+    
+	unsigned full_length = (unsigned) [self length];
+	unsigned half_length = (unsigned) [self length] / 2;
+    
+	NSMutableData *decompressed = [[NSMutableData alloc] initWithLength: full_length + half_length];
+	BOOL done = NO;
+	int status;
+    
+	z_stream strm;
+	strm.next_in = (Bytef *)[self bytes];
+	strm.avail_in = (unsigned) [self length];
+	strm.total_out = 0;
+	strm.zalloc = Z_NULL;
+	strm.zfree = Z_NULL;
+    
+	if (inflateInit (&strm) != Z_OK) {
+        [decompressed release];
+        return nil;
+    }
+    
+	while (!done) {
+		// Make sure we have enough room and reset the lengths.
+		if (strm.total_out >= [decompressed length]) {
+			[decompressed increaseLengthBy: half_length];
+        }
+        
+		strm.next_out = [decompressed mutableBytes] + strm.total_out;
+		strm.avail_out = (unsigned) ([decompressed length] - strm.total_out);
+        
+		// Inflate another chunk.
+		status = inflate (&strm, Z_SYNC_FLUSH);
+		if (status == Z_STREAM_END) {
+            done = YES;
+		} else if (status != Z_OK) {
+            break;
+        }
+	}
+    
+	if (inflateEnd (&strm) != Z_OK) {
+        [decompressed release];
+        return nil;
+    }
+    
+	// Set real length.
+    NSData *retval = nil;
+	if (done) {
+		[decompressed setLength: strm.total_out];
+		retval = [[NSData alloc] initWithData: decompressed];
+	}
+    
+    [decompressed release];
+	return [retval autorelease];
+}
+
+- (NSData *)zlibDeflate {
+	if ([self length] == 0) {
+        return self;
+    }
+	
+	z_stream strm;
+    
+	strm.zalloc = Z_NULL;
+	strm.zfree = Z_NULL;
+	strm.opaque = Z_NULL;
+	strm.total_out = 0;
+	strm.next_in=(Bytef *)[self bytes];
+	strm.avail_in = (unsigned) [self length];
+    
+	// Compresssion Levels:
+	//   Z_NO_COMPRESSION
+	//   Z_BEST_SPEED
+	//   Z_BEST_COMPRESSION
+	//   Z_DEFAULT_COMPRESSION
+    
+	if (deflateInit(&strm, Z_DEFAULT_COMPRESSION) != Z_OK) { 
+        return nil;
+    }
+    
+    // 4K chuncks for expansion
+	NSMutableData *compressed = [[NSMutableData alloc] initWithLength:4196];
+    
+	do {
+		if (strm.total_out >= [compressed length]) {
+			[compressed increaseLengthBy: 4196];
+        }
+		
+		strm.next_out = [compressed mutableBytes] + strm.total_out;
+		strm.avail_out = (unsigned) ([compressed length] - strm.total_out);
+		
+		deflate(&strm, Z_FINISH);  
+		
+	} while (strm.avail_out == 0);
+	
+	deflateEnd(&strm);
+	
+	[compressed setLength: strm.total_out];
+	NSData *retval = [[NSData alloc] initWithData: compressed];
+    [compressed release];
+    return [retval autorelease];
+}
+
+- (NSData *)gzipInflate {
+	if ([self length] == 0) {
+        return self;
+    }
+	
+	unsigned full_length = (unsigned) [self length];
+	unsigned half_length = (unsigned) ([self length] / 2);
+	
+	NSMutableData *decompressed = [[NSMutableData alloc] initWithLength: full_length + half_length];
+	BOOL done = NO;
+	int status;
+	
+	z_stream strm;
+	strm.next_in = (Bytef *)[self bytes];
+	strm.avail_in = (unsigned) [self length];
+	strm.total_out = 0;
+	strm.zalloc = Z_NULL;
+	strm.zfree = Z_NULL;
+	
+	if (inflateInit2(&strm, (15+32)) != Z_OK) {
+        [decompressed release];
+        return nil;
+    }
+    
+	while (!done) {
+		// Make sure we have enough room and reset the lengths.
+		if (strm.total_out >= [decompressed length]) {
+			[decompressed increaseLengthBy: half_length];
+        }
+        
+		strm.next_out = [decompressed mutableBytes] + strm.total_out;
+		strm.avail_out = (unsigned) ([decompressed length] - strm.total_out);
+		
+		// Inflate another chunk.
+		status = inflate (&strm, Z_SYNC_FLUSH);
+		if (status == Z_STREAM_END) {
+            done = YES;
+		} else if (status != Z_OK) {
+            break;
+        }
+	}
+    
+	if (inflateEnd (&strm) != Z_OK) {
+        [decompressed release];
+        return nil;
+    }
+	
+	// Set real length.
+    NSData *retval = nil;
+	if (done) {
+		[decompressed setLength: strm.total_out];
+		retval = [[NSData alloc] initWithData: decompressed];
+	}
+    
+    [decompressed release];
+	return [retval autorelease];
+}
+
+- (NSData *)gzipDeflate {
+	if ([self length] == 0) {
+        return self;
+    }
+	
+	z_stream strm;
+	
+	strm.zalloc = Z_NULL;
+	strm.zfree = Z_NULL;
+	strm.opaque = Z_NULL;
+	strm.total_out = 0;
+	strm.next_in=(Bytef *)[self bytes];
+	strm.avail_in = (unsigned) [self length];
+	
+	// Compresssion Levels:
+	//   Z_NO_COMPRESSION
+	//   Z_BEST_SPEED
+	//   Z_BEST_COMPRESSION
+	//   Z_DEFAULT_COMPRESSION
+	
+	if (deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, (15+16), 8, Z_DEFAULT_STRATEGY) != Z_OK) {
+        return nil;
+    }
+	
+    // 4K chunks for expansion
+	NSMutableData *compressed = [[NSMutableData alloc] initWithLength:4196];  
+	
+	do {
+		if (strm.total_out >= [compressed length]) {
+			[compressed increaseLengthBy: 4196];
+		}
+        
+		strm.next_out = [compressed mutableBytes] + strm.total_out;
+		strm.avail_out = (unsigned) ([compressed length] - strm.total_out);
+		
+		deflate(&strm, Z_FINISH);  
+		
+	} while (strm.avail_out == 0);
+	
+	deflateEnd(&strm);
+	
+	[compressed setLength: strm.total_out];
+	NSData *retval = [[NSData alloc] initWithData:compressed];
+    [compressed release];
+    return [retval autorelease];
+}
+
+@end
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of IOBuffer
+///////////////////////////////////////////////////////////////////////////////
+@implementation IOBuffer
+
+@synthesize dataBuffer;
+@synthesize limit;
+@synthesize current;
+
+- (IOBuffer *) init {
+    return [self initWithCapacity:BUFFER_TRUNC_SIZE];
+}
+
+- (IOBuffer *) initWithCapacity:(NSUInteger)capacity {
+    self = [super init];
+    if (self) {
+        dataBuffer = [[NSMutableData alloc] initWithCapacity:capacity];
+        limit = capacity;
+        current = 0;
+    }
+    
+    return self;
+}
+
+- (void) dealloc {
+#ifdef DEBUG
+    NSLog(@"**** IOBuffer dealloc");
+#endif
+    [dataBuffer release];
+	[super dealloc];
+}
+
+- (void) rewind {
+	current = 0;
+}
+
+- (void) flip {
+    limit = current;
+    current = 0;
+}
+
+- (void) clear {
+    current = 0;
+    limit = [dataBuffer length];
+//    [dataBuffer resetBytesInRange:(NSRange) {0, limit}];
+}
+
+- (NSUInteger) inputRemaining {
+	return limit - current;
+}
+
+- (NSUInteger) outputRemaining {
+    return [dataBuffer length] - current;
+}
+
+- (void) increaseCurrent:(NSUInteger) length {
+    current += length;
+}
+
+- (NSUInteger) copyData:(void *) dest {
+    return [self copyData:dest :(NSRange) {0, limit}];
+}
+
+- (NSUInteger) copyData:(void *) dest :(NSRange) range {
+    [dataBuffer getBytes:dest range:range];
+    return range.length - range.location;
+}
+
++ (void) reverseBytesOrder:(void *)bytes :(int)size {
+    Byte *p = (Byte *) bytes;
+    int half = size / 2;
+    Byte v;
+    for (int i = 0, j = size - 1; i < half; ++i, --j) {
+        v = p[i];
+        p[i] = p[j];
+        p[j] = v;
+    }
+}
+
++ (short) n2lShort:(short)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(short)];
+#endif
+    return v;
+}
+
++ (int) n2lInt:(int)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(int)];
+#endif
+    return v;
+}
+
++ (long long) n2lLong:(long long)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(long long)];
+#endif
+    return v;
+}
+
++ (float) n2lFloat:(float)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(float)];
+#endif
+    return v;
+}
+
++ (double) n2lDouble:(double)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(double)];
+#endif
+    return v;
+}
+
++ (short) l2nShort:(short)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(short)];
+#endif
+    return v;
+}
+
++ (int) l2nInt:(int)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(int)];
+#endif
+    return v;
+}
+
++ (long long) l2nLong:(long long)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(long long)];
+#endif
+    return v;
+}
+
++ (float) l2nFloat:(float)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(float)];
+#endif
+    return v;
+}
+
++ (double) l2nDouble:(double)v {
+\#if BYTE_ORDER == LITTLE_ENDIAN
+    [self reverseBytesOrder:&v :sizeof(double)];
+#endif
+    return v;
+}
+
+- (void) getBytes: (void*) dest: (NSUInteger) length {
+    if ([self inputRemaining] < length) {
+        @throw [MessageBuffer createException:@"IOBuffer"
+                                             :nil
+                                             :__FILE__
+                                             :__LINE__
+                                             :"buffer overflow"];
+    } else {
+        [self->dataBuffer getBytes:dest range:(NSRange) {current, length}];
+        [self increaseCurrent:length];
+    }
+}
+
+- (Byte) readByte {
+    Byte v;
+    [self getBytes:&v :sizeof(Byte)];
+    return v;
+}
+
+- (BOOL) readBoolean {
+    Byte v;
+    [self getBytes:&v :sizeof(Byte)];
+    return v == MB_TRUE ? TRUE : FALSE;
+}
+
+- (short) readShort {
+    short v = 0;
+    [self getBytes:&v :sizeof(short)];
+    return [IOBuffer n2lShort:v];
+}
+
+- (int) readInt {
+    int v = 0;
+    [self getBytes:&v :sizeof(int)];
+    return [IOBuffer n2lInt:v];
+}
+
+- (long long) readLong {
+    long long v = 0;
+    [self getBytes:&v :sizeof(long long)];
+    return [IOBuffer n2lLong:v];
+}
+
+- (float) readFloat {
+    float v = 0.00;
+    [self getBytes:(&v) :sizeof(float)];
+    return [IOBuffer n2lFloat:v];
+}
+
+- (double) readDouble {
+    double v = 0.00;
+    [self getBytes:&v :sizeof(double)];
+    return [IOBuffer n2lDouble:v];
+}
+
+- (NSString*) readUTF {
+    NSUInteger len = [self readShort];
+    char cstr[len];
+    [self getBytes:cstr :len];
+    return [[[NSString alloc] initWithBytes:cstr length:len encoding:NSUTF8StringEncoding] autorelease];
+}
+
+- (void) extendBufferToContain:(NSUInteger) length {
+    NSInteger gap = [self outputRemaining] - length;
+    if (gap < 0) {
+        NSInteger num = (- gap) / BUFFER_TRUNC_SIZE + 1;
+        [self->dataBuffer increaseLengthBy:num * BUFFER_TRUNC_SIZE];
+    }
+}
+
+- (void) replaceBytes:(const void *)src :(NSRange)range {
+    [self->dataBuffer replaceBytesInRange:range withBytes:src];
+}
+
+- (void) putBytes:(const void *)src :(NSUInteger)length {
+    [self extendBufferToContain:length];
+    NSRange range = (NSRange) {current, length};
+    [self->dataBuffer replaceBytesInRange:range withBytes:src];
+    [self increaseCurrent:length];
+}
+
+- (void) putData:(NSData *) data {
+    [self putBytes:[data bytes] :[data length]];        
+}
+
+- (void) writeByte:(Byte)v {
+    [self putBytes:&v :sizeof(Byte)];
+}
+
+- (void) writeBoolean:(BOOL)v {
+    Byte byte = v ? MB_TRUE : MB_FALSE;
+    [self putBytes:&byte :sizeof(Byte)];
+}
+
+- (void) writeShort:(short)v {
+    v = [IOBuffer l2nShort:v];
+    [self putBytes:&v :sizeof(short)];
+}
+
+- (void) writeInt:(int)v {
+    v = [IOBuffer l2nInt:v];
+    [self putBytes:&v :sizeof(int)];
+}
+
+- (void) writeLong:(long long)v {
+    v = [IOBuffer l2nLong:v];
+    [self putBytes:&v :sizeof(long long)];
+}
+
+- (void) writeFloat:(float)v {
+    v = [IOBuffer l2nFloat:v];
+    [self putBytes:&v :sizeof(float)];
+}
+
+- (void) writeDouble:(double)v {
+    v = [IOBuffer l2nDouble:v];
+    [self putBytes:&v :sizeof(double)];
+}
+
+- (void) writeUTF:(NSString *)v {
+    short len = [v lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    short nlen = [IOBuffer l2nShort:len];
+    [self putBytes:&nlen :sizeof(short)];
+    [self putBytes:(void*) [v cStringUsingEncoding:NSUTF8StringEncoding] :len];
+}
+
+@end
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of MessageBean
+///////////////////////////////////////////////////////////////////////////////
+@implementation MessageBean
+
+@synthesize commandId;
+
+- (MessageBean *) init {
+    self = [super init];
+    if (self) {
+    	[self clear];
+    }
+    
+    return self;
+}
+
+
+- (MessageBean *) initWithCommandId:(short)cmdId {
+	self = [super init];
+	if (self) {
+		commandId = cmdId;
+	}
+	
+	return self;
+}
+
+- (void) clear {
+	commandId = 0;
+}
+
+- (void) printToString:(NSMutableString *)string {
+	[self printToStringWithIndent:string :0];
+}
+
+- (void) appendIndent:(NSMutableString *)string :(int)indentLevel {
+	for (int i = 0; i < indentLevel; ++i) {
+		[string appendString:@"    "];
+	}
+}
+
+- (void) printToStringWithIndent:(NSMutableString *)string :(int)indentLevel {
+}
+
+- (void) serialize:(IOBuffer *)obuffer {
+    @throw [MessageBuffer createException:@"MessageBean"
+                                         :nil
+                                         :__FILE__
+                                         :__LINE__
+                                         :"Un-implemented instance serialize method."];
+}
+
+- (void) deserialize:(IOBuffer *)ibuffer {
+    @throw [MessageBuffer createException:@"MessageBean"
+                                         :nil
+                                         :__FILE__
+                                         :__LINE__
+                                         :"Un-implemented instance deserialize method."];
+}
+
++ (MessageBean *) deserialize:(IOBuffer *)ibuffer {
+    @throw [MessageBuffer createException:@"MessageBean"
+	                                     :nil
+                                         :__FILE__
+                                         :__LINE__
+                                         :"Un-implemented class deserialize method."];
+}
+
+@end
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of MessageBuffer
+///////////////////////////////////////////////////////////////////////////////
+@implementation MessageBuffer
+
++ (id) getBeanClassByCommandId:(short)commandId {
+	switch (commandId) {
+#foreach ($command in $mapping.keySet())
+#set ($bean = $mapping.get($command))
+#if ($bean.nullMessage)
+		case ${command}:	return nil;
+#else
+		case ${command}:	return [${bean.typeId} class];
+#end
+#end
+		default:
+            @throw [MessageBuffer createException:@"MessageBufer"
+                                                 :nil
+                                                 :__FILE__
+                                                 :__LINE__
+                                                 :"Un-defined command ID %d.", (int) commandId];
+	}
+}
+
++ (BOOL) isZippedCommand:(short) commandId {
+#if ($zipCommands.size() > 0)
+	switch (commandId) {
+#foreach ($cmdid in $zipCommands)
+		case $cmdid:
+#end
+			return TRUE;
+			
+		default:
+			return FALSE;
+	}
+#else
+	return FALSE;
+#end
+}
+
++ (NSException *) createException:(NSString *)className :(NSException *) cause: (const char *)file :(int)lineNum :(const char *)reasonFormat, ... {
+    va_list argList;
+    va_start(argList, reasonFormat);
+    
+    char tmp[256];
+    memset(&tmp, 0, sizeof(tmp));
+    vsprintf(tmp, reasonFormat, argList);
+    
+    NSNumber *ln = [NSNumber numberWithInt:lineNum];
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                          @"File:", [NSString stringWithUTF8String:file],
+                          @"Line:", [ln stringValue],
+                          @"Cause:", (cause == nil ? @"N/A" : cause),
+                          @"Stack:", (cause == nil ? @"N/A" : [cause callStackSymbols]),
+                          nil];
+    
+    return [NSException exceptionWithName:className
+                                   reason:[NSString stringWithUTF8String:tmp]
+                                 userInfo:dict];
+    
+}
+
++ (NSUInteger) pack:(short)commandId :(MessageBean *)bean :(IOBuffer *)obuffer {	
+    // 写入一个字节的“是否压缩标识"
+    BOOL isZipped = [self isZippedCommand:commandId];
+    Byte zipFlag = isZipped ? MB_TRUE : MB_FALSE;
+    [obuffer writeByte:zipFlag];
+    
+    id beanClass = [MessageBuffer getBeanClassByCommandId:commandId];
+    if (beanClass == nil) { // 空指令
+        return 0;
+    } else if (isZipped) {
+        IOBuffer *unzippedBuffer = [[IOBuffer alloc] init];
+        [MessageBuffer packBean:unzippedBuffer :bean];
+        [unzippedBuffer flip];
+        Byte *unzippedBytes = (Byte *) [unzippedBuffer.dataBuffer bytes];
+        NSUInteger unzippedLength = [unzippedBuffer limit];
+        NSData *unzippedData = [[NSData alloc] initWithBytesNoCopy:unzippedBytes
+                                                            length:unzippedLength
+                                                      freeWhenDone:FALSE];
+        NSData *zippedData = [unzippedData gzipDeflate];
+        [obuffer putData:zippedData];
+        
+        //[zippedData release];
+        [unzippedData release];
+        [unzippedBuffer release];
+    } else {
+        [MessageBuffer packBean:obuffer : bean];
+    }
+	
+	return obuffer.current;
+}
+
++ (MessageBean *) unpack:(short) commandId :(IOBuffer *) ibuffer {
+	@try {
+		id beanClass = [MessageBuffer getBeanClassByCommandId:commandId];
+        MessageBean *bean = nil;
+        
+        // 读出“是否压缩标识"
+		Byte isZipped = [ibuffer readByte];
+        
+        if (beanClass == nil) { // 空指令
+            bean = [[NullMessageBean alloc] init];
+        } else if (isZipped == MB_TRUE) {
+            NSUInteger remaining = [ibuffer inputRemaining];
+            NSUInteger current = [ibuffer current];
+            Byte *zippedBytes = ((Byte *) [ibuffer.dataBuffer bytes]) + current;
+            
+            NSData *zippedData = [[NSData alloc] initWithBytesNoCopy:zippedBytes
+                                                              length:remaining
+                                                        freeWhenDone:FALSE];
+            NSData *unzippedData = [zippedData gzipInflate];
+            IOBuffer *unzippedBuffer = [[IOBuffer alloc] init];
+            [unzippedBuffer putData:unzippedData];
+            [unzippedBuffer flip];
+            bean = [MessageBuffer unpackBean:unzippedBuffer :beanClass];
+            
+            [unzippedBuffer release];
+            //[unzippedData release];
+            [zippedData release];
+        } else {
+            bean = [MessageBuffer unpackBean:ibuffer :beanClass];
+        }
+        
+        bean.commandId = commandId;
+        return bean;
+	} @catch (NSException *e) {
+		NSLog(@"Exception: %@ %@ %@", [e name], [e reason], [e userInfo]);
+		return nil;
+	}
+}
+
++ (void) packBean:(IOBuffer *) obuffer :(MessageBean *) bean {
+    [MessageBuffer writeIsNull:obuffer :bean];
+    if (bean == nil) {
+        return;
+    } else {
+        [bean serialize:obuffer];
+    }
+}
+
++ (void) packBeanList:(IOBuffer *)obuffer :(NSMutableArray *)beanList {
+    [MessageBuffer writeIsNull:obuffer :beanList];
+    if (beanList == nil) {
+        return;
+    }
+    
+    long len = [beanList count];
+    [obuffer writeShort:len];
+    for (int i = 0; i < len; ++i) {
+        [MessageBuffer packBean:obuffer: [beanList objectAtIndex:i]];
+    }
+}
+
++ (MessageBean *) unpackBean:(IOBuffer *) ibuffer :(id) beanClass {
+    if ([MessageBuffer readIsNull:ibuffer]) {
+        return nil;
+    } else {
+        MessageBean *bean = [[beanClass alloc] init];
+        [bean deserialize:ibuffer];
+        return [bean autorelease];
+    }
+}
+
++ (NSMutableArray *) unpackBeanList:(IOBuffer *) ibuffer :(id) beanClass {
+    if ([MessageBuffer readIsNull:ibuffer]) {
+        return nil;
+    }
+    
+    short len = [ibuffer readShort];
+    NSMutableArray *beanList = [[NSMutableArray alloc] initWithCapacity:len];
+    MessageBean *bean = nil;
+    for (int i = 0; i < len; ++i) {
+    	bean = [MessageBuffer unpackBean:ibuffer :beanClass];
+        [beanList addObject:bean];
+        //[bean release];
+    }
+    
+    return [beanList autorelease];
+}
+
+
++ (NSMutableArray *) readArray:(IOBuffer *)ibuffer :(int)dataType {
+    if ([MessageBuffer readIsNull:ibuffer]) {
+        return nil;
+    }
+    
+    int len = [ibuffer readShort];
+    if (len < 0) {
+        @throw [MessageBuffer createException:@"MessageBean"
+                                             :nil
+                                             :__FILE__
+                                             :__LINE__
+                                             :"Elements number of array is negative."];
+    }
+    
+    NSMutableArray *ary = [[NSMutableArray alloc] initWithCapacity:len];
+    NSString *string;
+    
+    Byte byteValue;
+    BOOL boolValue;
+    short shortValue;
+    int intValue;
+    long long longValue;
+    float floatValue;
+    double doubleValue;
+    
+    for (int i = 0; i < len; ++i) {
+        switch (dataType) {
+            case DT_BYTE:
+                byteValue = [ibuffer readByte];
+                [ary addObject:[NSNumber numberWithChar:byteValue]];
+                break;
+                
+            case DT_BOOL:
+                boolValue = [ibuffer readBoolean];
+                [ary addObject:[NSNumber numberWithBool:boolValue]];
+                break;
+                
+            case DT_SHORT:
+                shortValue = [ibuffer readShort];
+                [ary addObject:[NSNumber numberWithShort:shortValue]];
+                break;
+                
+            case DT_INT:
+                intValue = [ibuffer readInt];
+                [ary addObject:[NSNumber numberWithInt:intValue]];
+                break;
+                
+            case DT_LONG:
+                longValue = [ibuffer readLong];
+                [ary addObject:[NSNumber numberWithLongLong:longValue]];
+                break;
+                
+            case DT_FLOAT:
+                floatValue = [ibuffer readFloat];
+                [ary addObject:[NSNumber numberWithFloat:floatValue]];
+                break;
+                 
+            case DT_DOUBLE:
+                doubleValue = [ibuffer readDouble];
+                [ary addObject:[NSNumber numberWithDouble:doubleValue]];
+                break;
+                
+            case DT_STRING:
+                string = [MessageBuffer readString:ibuffer];
+                [ary addObject:string];
+                //[string release];
+                break;
+                
+            default:
+                @throw [MessageBuffer createException:@"MessageBean"
+                                                     :nil
+                                                     :__FILE__
+                                                     :__LINE__
+                                                     :"Unkonwn data type: %d.", dataType];
+        }
+    }
+    
+    return [ary autorelease];
+}
+
++ (void) writeArray:(IOBuffer *)obuffer :(NSMutableArray *)ary :(int)dataType {
+    [self writeIsNull:obuffer :ary];
+    if (ary == nil) {
+        return;
+    }
+    
+    short len = [ary count];
+    [obuffer writeShort:len];
+    if (len == 0) {
+        return;
+    }
+    
+    NSNumber *number;
+    NSString *string;
+    NSObject *obj;
+    
+    for (int i = 0; i < len; ++i) {
+        obj = [ary objectAtIndex:i];
+        if (IS_NUMBER_TYPE(dataType)) {
+            number = (NSNumber *) obj;
+        } else if (IS_STRING_TYPE(dataType)) {
+            string = (NSString *) obj;
+        }
+        
+        switch (dataType) {
+            case DT_BYTE:
+                [obuffer writeByte:[number charValue]];
+                break;
+                
+            case DT_BOOL:
+                [obuffer writeBoolean:[number boolValue]];
+                break;
+                
+            case DT_SHORT:
+                [obuffer writeShort:[number shortValue]];
+                break;
+                
+            case DT_INT:
+                [obuffer writeInt:[number intValue]];
+                break;
+                
+            case DT_LONG:
+                [obuffer writeLong:[number longLongValue]];
+                break;
+                
+            case DT_FLOAT:
+                [obuffer writeFloat:[number floatValue]];
+                break;
+                
+            case DT_DOUBLE:
+                [obuffer writeDouble:[number doubleValue]];
+                break;
+                
+            case DT_STRING:
+                [MessageBuffer writeString:obuffer :string];
+                break;
+                
+            default:
+                @throw [MessageBuffer createException:@"MessageBean"
+                                                     :nil
+                                                     :__FILE__
+                                                     :__LINE__
+                                                     :"Unkonwn data type: %d.", dataType];
+        }
+    }
+}
+
++ (Byte) readByte:(IOBuffer *)ibuffer {
+    return [ibuffer readByte];
+}
+
++ (NSMutableArray *) readByteArray:(IOBuffer *)ibuffer {
+    return [MessageBuffer readArray:ibuffer :DT_BYTE];
+}
+
++ (BOOL) readBoolean:(IOBuffer *)ibuffer {
+    return [ibuffer readByte] == MB_TRUE ? TRUE : FALSE;
+}
+
++ (NSMutableArray *) readBooleanArray:(IOBuffer *)ibuffer {
+    return [MessageBuffer readArray:ibuffer :DT_BOOL];
+}
+
++ (short) readShort:(IOBuffer *)ibuffer {
+    return [ibuffer readShort];
+}
+
++ (NSMutableArray *) readShortArray:(IOBuffer *)ibuffer {
+    return [MessageBuffer readArray:ibuffer :DT_SHORT];}
+
++ (int) readInteger:(IOBuffer *)ibuffer {
+    return [ibuffer readInt];
+}
+
++ (NSMutableArray *) readIntegerArray:(IOBuffer *)ibuffer {
+    return [MessageBuffer readArray:ibuffer :DT_INT];
+
+}
+
++ (long long) readLong:(IOBuffer *)ibuffer {
+    return [ibuffer readLong];
+}
+
++ (NSMutableArray *) readLongArray:(IOBuffer *)ibuffer {
+    return [MessageBuffer readArray:ibuffer :DT_LONG];
+}
+
++ (float) readFloat:(IOBuffer *)ibuffer {
+    return [ibuffer readFloat];
+}
+
++ (NSMutableArray *) readFloatArray:(IOBuffer *)ibuffer {
+    return [MessageBuffer readArray:ibuffer :DT_FLOAT];
+
+}
+
++ (double) readDouble:(IOBuffer *)ibuffer {
+    return [ibuffer readDouble];
+}
+
++ (NSMutableArray *) readDoubleArray:(IOBuffer *)ibuffer {
+    return [MessageBuffer readArray:ibuffer :DT_DOUBLE];
+
+}
+
++ (NSString *) readString:(IOBuffer *)ibuffer {
+    if ([MessageBuffer readIsNull:ibuffer]) {
+        return nil;
+    } else {
+        return [ibuffer readUTF];
+    }
+}
+
++ (NSMutableArray *) readStringArray:(IOBuffer *)ibuffer {
+    return [MessageBuffer readArray:ibuffer :DT_STRING];
+}
+
++ (void) writeIsNull:(IOBuffer *)obuffer :(NSObject *)obj {
+    if (obj == nil) {
+        [obuffer writeByte:MB_NULL];
+    } else {
+        [obuffer writeByte:MB_NOT_NULL];
+    }
+}
+
++ (BOOL) readIsNull:(IOBuffer *)ibuffer {
+	return [ibuffer readByte] ? TRUE : FALSE;
+}
+
++ (void) writeByte:(IOBuffer *)obuffer :(Byte)v {
+    [obuffer writeByte:v];
+}
+
++ (void) writeByteArray:(IOBuffer *)obuffer :(NSMutableArray *)ary {
+    [MessageBuffer writeArray:obuffer :ary :DT_BYTE];
+}
+
++ (void) writeBoolean:(IOBuffer *)obuffer :(BOOL)v {
+	[obuffer writeBoolean:v];
+}
+
++ (void) writeBooleanArray:(IOBuffer *)obuffer :(NSMutableArray *)ary {
+	[MessageBuffer writeArray:obuffer :ary :DT_BOOL];
+}
+
++ (void) writeShort:(IOBuffer *)obuffer :(short)v {
+    [obuffer writeShort:v];
+}
+
++ (void) writeShortArray:(IOBuffer *)obuffer :(NSMutableArray *)ary {
+    [MessageBuffer writeArray:obuffer :ary :DT_SHORT];
+}
+
++ (void) writeInteger:(IOBuffer *)obuffer :(int)v {
+    [obuffer writeInt:v];
+}
+
++ (void) writeIntegerArray:(IOBuffer *)obuffer :(NSMutableArray *)ary {
+    [MessageBuffer writeArray:obuffer :ary :DT_INT];
+}
+
++ (void) writeLong:(IOBuffer *)obuffer :(long long)v {
+    [obuffer writeLong:v];
+}
+
++ (void) writeLongArray:(IOBuffer *)obuffer :(NSMutableArray *)ary {
+    [MessageBuffer writeArray:obuffer :ary :DT_LONG];
+}
+
++ (void) writeFloat:(IOBuffer *)obuffer :(float)v {
+    [obuffer writeFloat:v];
+}
+
++ (void) writeFloatArray:(IOBuffer *)obuffer :(NSMutableArray *)ary {
+    [MessageBuffer writeArray:obuffer :ary :DT_FLOAT];
+}
+
++ (void) writeDouble:(IOBuffer *)obuffer :(double)v {
+    [obuffer writeDouble:v];
+}
+
++ (void) writeDoubleArray:(IOBuffer *)obuffer :(NSMutableArray *)ary {
+    [MessageBuffer writeArray:obuffer :ary :DT_DOUBLE];
+}
+
++ (void) writeString:(IOBuffer *)obuffer :(NSString *)v {
+    [MessageBuffer writeIsNull:obuffer :v];
+    if (v == nil) {
+        return;
+    }
+    
+    [obuffer writeUTF:v];
+}
+
++ (void) writeStringArray:(IOBuffer *)obuffer :(NSMutableArray *)ary {
+    [MessageBuffer writeArray:obuffer :ary :DT_STRING];
+}
+
+@end
+
+@implementation NullMessageBean
+- (void) printToString:(NSMutableString *)string {
+    [string appendString:@"NullMessageBean {}"];
+}
+@end
+
+#foreach ($messageBean in $allMessageBeans)
+///////////////////////////////////////////////////////////////////////////////
+// 消息${messageBean.typeId}
+#if ($messageBean.hasDoc())
+#foreach ($line in $messageBean.doc)
+// ${line}
+#end
+#end
+//
+@implementation ${messageBean.typeId}
+
+#foreach ($fieldName in $messageBean.fieldsName)
+#set ($field = $messageBean.getField($fieldName))
+@synthesize ${field.name};
+#end
+
+#foreach ($fieldName in $messageBean.fieldsName)
+#set($field = ${messageBean.getField($fieldName)})
+#if ($field.type.string)
+- (void) set${field.firstCharUpperName}:(NSString *)str {
+	if (self->${field.name} != nil) {
+		[self->${field.name} release];
+		self->${field.name} = nil;
+	}
+	
+	if (str != nil) {
+		self->${field.name} = [[NSString alloc] initWithString:str];
+	}
+}
+
+- (void) set${field.firstCharUpperName}WithCString:(const char *)str {
+	if (self->${field.name} != nil) {
+		[self->${field.name} release];
+		self->${field.name} = nil;
+	}
+	
+	if (str != nil) {
+		self->${field.name} = [[NSString alloc] initWithCString:str encoding:NSUTF8StringEncoding];
+	}
+}
+
+- (NSUInteger) get${field.firstCharUpperName}ToCString:(char *)str :(int) maxLen {
+	if (self->$field.name != nil) {
+    	[self->${field.name} getCString:str maxLength:maxLen encoding:NSUTF8StringEncoding];
+		return [self->$field.name length];
+	} else {
+		return 0;
+	}
+}
+
+#end
+#if ($field.type.bean)
+- (void) set${field.firstCharUpperName}:(${field.type.typeId} *) ref {
+	if (self->${field.name} != nil) {
+		[self->$field.name release];
+		self->${field.name} = nil;
+	}
+	
+	if (ref != nil) {
+		[ref retain];
+		self->$field.name = ref;
+	}
+}
+
+#end
+#if ($field.type.set)
+#set ($entityType = ${field.type.entityType.typeId})
+- (void) addElementTo${field.firstCharUpperName}:($field.type.entityType.typeName) elem {
+	if (self->$field.name == nil) {
+		self->$field.name = [[NSMutableArray alloc] initWithCapacity:16];
+	}
+
+#if ($entityType == "byte")
+	[self->$field.name addObject:[NSNumber numberWithChar:elem]];
+#elseif ($entityType == "boolean")
+	[self->$field.name addObject:[NSNumber numberWithBool:elem]];
+#elseif ($entityType == "short")
+	[self->$field.name addObject:[NSNumber numberWithShort:elem]];
+#elseif ($entityType == "int")
+	[self->$field.name addObject:[NSNumber numberWithInt:elem]];
+#elseif ($entityType == "long")
+	[self->$field.name addObject:[NSNumber numberWithLongLong:elem]];
+#elseif ($entityType == "float")
+	[self->$field.name addObject:[NSNumber numberWithFloat:elem]];
+#elseif ($entityType == "double")
+	[self->$field.name addObject:[NSNumber numberWithDouble:elem]];
+#else
+	[self->$field.name addObject:elem];
+#end
+}
+
+- (void) set${field.firstCharUpperName}:(NSMutableArray *) array {
+	if (self->$field.name != nil) {
+		[self->$field.name release];
+		self->${field.name} = nil;
+	}
+
+	if (array != nil) {
+		self->$field.name = [[NSMutableArray alloc] initWithArray: array];
+	}
+}
+
+#if ($field.type.setType != "List")
+#if (!$field.type.entityType.string)
+- (void) set${field.firstCharUpperName}WithArray:(${field.type.entityType.typeName} *) ary :(int) len {
+	 if (self->$field.name != nil) {
+	 	[self->$field.name removeAllObjects];
+	 } else {
+		self->$field.name = [[NSMutableArray alloc] initWithCapacity:len];
+     }
+	
+	if (ary == nil || len <= 0) {
+		return;
+	}
+    
+    NSNumber *number;
+    for (int i = 0; i < len; ++i) {
+#if ($entityType == "byte")
+		number = [NSNumber numberWithChar:ary[i]];
+#elseif ($entityType == "boolean")
+		number = [NSNumber numberWithBool:ary[i]];
+#elseif ($entityType == "short")
+		number = [NSNumber numberWithShort:ary[i]];
+#elseif ($entityType == "int")
+		number = [NSNumber numberWithInt:ary[i]];
+#elseif ($entityType == "long")
+		number = [NSNumber numberWithLongLong:ary[i]];
+#elseif ($entityType == "float")
+		number = [NSNumber numberWithFloat:ary[i]];
+#elseif ($entityType == "double")
+		number = [NSNumber numberWithDouble:ary[i]];
+#end
+        [self->$field.name addObject:number];
+    }
+}
+
+- (int) get${field.firstCharUpperName}ToArray:(${field.type.entityType.typeName} *) ary {
+	if (self->$field.name == nil) {
+		return 0;
+	}
+	
+	int len = (int) [self->${field.name} count];
+    NSNumber *number;
+    for (int i = 0; i < len; ++i) {
+        number = [self->${field.name} objectAtIndex:i];
+#if ($entityType == "byte")
+        ary[i] = [number charValue];
+#elseif ($entityType == "boolean")
+		ary[i] = [number boolValue];
+#elseif ($entityType == "short")
+		ary[i] = [number shortValue];
+#elseif ($entityType == "int")
+		ary[i] = [number intValue];
+#elseif ($entityType == "long")
+		ary[i] = [number longLongValue];
+#elseif ($entityType == "float")
+		ary[i] = [number floatValue];
+#elseif ($entityType == "double")
+		ary[i] = [number doubleValue];
+#end
+    }
+	
+	return len;
+}
+
+#end
+#end
+#end
+#end
+
+- (void) clear {
+	[super clear];
+#foreach ($fieldName in $messageBean.fieldsName)
+#set ($field = ${messageBean.getField($fieldName)})
+	self->$field.name = ${field.initValue};
+#end
+}
+
+/*
+ * 把各field的值设为0或者nil
+ */
+- ($messageBean.typeId *) init {
+	self = [super init];
+	[self clear];
+	return self;
+}
+
+/*
+ * 释放消息${messageBean.typeId}占用的内存
+ */
+- (void) dealloc {
+#ifdef DEBUG
+	NSLog(@"**** MessageBean ${messageBean.typeId} dealloc");
+#endif
+
+#foreach ($fieldName in $messageBean.fieldsName)
+#set ($field = ${messageBean.getField($fieldName)})
+#if ($field.type.string || $field.type.bean)
+	if (self->$field.name != nil) {
+		[self->$field.name release];
+		self->$field.name = nil;
+	}
+	
+#end
+#if ($field.type.set)
+	if (self->$field.name != nil) {
+		[self->$field.name release];
+		self->$field.name = ${field.initValue};
+	}
+	
+#end
+#end
+	[super dealloc];
+}
+
+/*
+ * 把消息${messageBean.typeId}的信息完整地格式化输出到字符串中。
+ *
+ * @param string 用于格式化输出结果的字符串对象。
+ * @param indentLevel 输出时的缩进级别
+ */
+- (void) printToStringWithIndent:(NSMutableString *)string :(int)indentLevel {
+	[string appendFormat:@"${messageBean.typeId} [retainCount=%u] {\n", [self retainCount]];
+
+#foreach ($fieldName in $messageBean.fieldsName)
+	// 输出域 ${fieldName}
+	[self appendIndent:string :indentLevel + 1];
+#set ($field = ${messageBean.getField($fieldName)})
+#if ($field.type.simple)
+	[string appendString:@"${field.type.typeId} ${field.name} = "];
+#if ($field.type.typeId == "byte")
+	[string appendFormat:@"0X%02X\n", self->${field.name}]; 
+#elseif ($field.type.typeId == "boolean")
+	[string appendFormat:@"%s\n", self->${field.name} ? "TRUE" : "FALSE"];
+#elseif ($field.type.typeId == "short")
+	[string appendFormat:@"%hi\n", self->${field.name}];
+#elseif ($field.type.typeId == "int")
+	[string appendFormat:@"%d\n", self->${field.name}];
+#elseif ($field.type.typeId == "long")
+	[string appendFormat:@"%qi\n", self->${field.name}];
+#elseif ($field.type.typeId == "float")
+	[string appendFormat:@"%f\n", self->${field.name}];
+#elseif ($field.type.typeId == "double")
+	[string appendFormat:@"%f\n", self->${field.name}];
+#elseif ($field.type.typeId == "String")
+	if (self->${field.name} == nil) {
+		[string appendString:@"nil\n"];
+	} else {
+		[string appendFormat:@"[retainCount=%u] \"%@\"\n", [self->${field.name} retainCount], self->${field.name}];
+	}
+#end
+#elseif ($field.type.bean)
+	[string appendString:@"${field.type.typeId} ${field.name} = "];
+	if (self->${field.name} == nil) {
+		[string appendString:@"nil\n"];
+	} else {
+		[self->${field.name} printToStringWithIndent:string :indentLevel + 1];
+	}
+#elseif ($field.type.set)
+#if ($field.type.setType == "List")
+	[string appendString:@"List<${field.type.entityType.typeId}> ${field.name} = "];
+	if (self->${field.name} == nil) {
+		[string appendString:@"nil\n"];
+	} else {
+		[string appendFormat:@"[retainCount=%u] {\n", [$field.name retainCount]];
+		int len = (int) [self->${field.name} count];
+		MessageBean *bean;
+		for (int i = 0; i < len; ++i) {
+			[self appendIndent:string :indentLevel + 2];
+			[string appendFormat:@"<%d> = ", i];
+			bean = [self->${field.name} objectAtIndex:i];
+			[bean printToStringWithIndent:string :indentLevel +2];
+		}
+#else
+	[string appendString:@"${field.type.entityType.typeId}[] ${field.name} = "];
+	if (self->${field.name} == nil) {
+		[string appendString:@"nil\n"];
+	} else {
+		[string appendFormat:@"[retainCount=%u] {\n", [$field.name retainCount]];
+		int len = (int) [self->${field.name} count];
+		NSNumber *number;
+		for (int i = 0; i < len; ++i) {
+			[self appendIndent:string :indentLevel + 2];
+			[string appendFormat:@"[%d] = ", i];
+			number = [self->${field.name} objectAtIndex:i];
+#if ($field.type.entityType.typeId == "boolean")
+			[string appendFormat:@"%s\n", [number boolValue] ? "TRUE" : "FALSE"];
+#elseif ($field.type.entityType.typeId == "String")
+			[string appendFormat:@"[retainCount=%u] \"%@\"\n", [number retainCount], number];
+#else
+			[string appendFormat:@"%@\n", number];
+#end
+		}
+#end
+		[self appendIndent:string :indentLevel + 1];
+		[string appendString:@"}\n\n"];
+	}
+#end
+
+#end
+
+	[self appendIndent:string :indentLevel];
+	[string appendString:@"}\n\n"];
+}
+
+/*
+ * 把消息${messageBean.typeId}的各域序列化到IOBuffer中。
+ *
+ * @param obuffer 用于存放序列化结果字节流的buffer对象
+ */
+- (void) serialize:(IOBuffer *)obuffer {
+	char *__currentFieldName = "N/A";
+	@try {
+#foreach ($fieldName in $messageBean.fieldsName)
+		// 序列化域 ${fieldName}
+		__currentFieldName = "${fieldName}";
+#set ($field = $messageBean.getField($fieldName))
+#if ($field.type.simple)
+		[MessageBuffer write${field.type.classTypeName}:obuffer :self->${field.name}];
+#elseif ($field.type.bean)
+		[MessageBuffer packBean:obuffer :self->${field.name}];
+#elseif ($field.type.set)
+#if ($field.type.setType == "List")
+		[MessageBuffer packBeanList:obuffer :self->${field.name}];
+#else
+		[MessageBuffer write${field.type.entityType.classTypeName}Array:obuffer :self->${field.name}];
+#end
+#end
+
+#end
+	} @catch (NSException *__ex) {
+		@throw [MessageBuffer createException:@"AllType#serialize"
+                                             :__ex
+                                             :__FILE__
+                                             :__LINE__
+                                             :"Field=%s", __currentFieldName];
+	}
+}
+
+/*
+ * 从IOBuffer中反序列化出${messageBean.typeId}各field的值。
+ *
+ * @param IOBuffer 储存数据流的buffer对象
+ */
+- (void) deserialize:(IOBuffer *)ibuffer {
+	char *__currentFieldName = "N/A";
+	@try {
+#foreach ($fieldName in $messageBean.fieldsName)
+		// 反序列化域 ${fieldName}
+		__currentFieldName = "${fieldName}";
+#set ($field = ${messageBean.getField($fieldName)})
+#if ($field.type.simple)
+#if ($field.type.typeId == "String")
+		self->${field.name} = [[MessageBuffer read${field.type.classTypeName}:ibuffer] retain];
+#else
+		self->${field.name} = [MessageBuffer read${field.type.classTypeName}:ibuffer];
+#end
+#elseif ($field.type.bean)
+		self->${fieldName} = (${field.type.entityType.typeId} *) [[MessageBuffer unpackBean:ibuffer :[${field.type.entityType.typeId} class]] retain];
+#elseif ($field.type.set)
+#if ($field.type.setType == "List")
+		self->${fieldName} = [[MessageBuffer unpackBeanList:ibuffer :[${field.type.entityType.typeId} class]] retain];
+#else
+		self->${fieldName} = [[MessageBuffer read${field.type.entityType.classTypeName}Array:ibuffer] retain];
+#end
+#end
+
+#end
+	} @catch (NSException *__ex) {
+		@throw [MessageBuffer createException:@"AllType#deserialize"
+                                             :__ex
+                                             :__FILE__
+                                             :__LINE__
+                                             :"Field=%s", __currentFieldName];
+	}
+}
+
+@end
+
+#end

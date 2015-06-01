@@ -1,0 +1,3517 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>消息定义</title>
+</head>
+
+<body>
+<hr />
+<A name="ActiveRole"><!-- --></A>
+<h1>ActiveRole</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#RoleBase">RoleBase</a>
+		</td>
+	<td>roleBase</td>
+	<td>
+					角色基本信息<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>head</td>
+	<td>
+					头 无则null<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>body</td>
+	<td>
+					身 无则null<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>hand</td>
+	<td>
+					手 无则null<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>profession</td>
+	<td>
+					职业名称<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>type</td>
+	<td>
+					角色类型 0: 玩家 1:怪 2 npc<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>stat</td>
+	<td>
+					角色状态 0 无 1 死亡 2 红名<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hp</td>
+	<td>
+					体力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>mp</td>
+	<td>
+					精力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxhp</td>
+	<td>
+					最大体力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxmp</td>
+	<td>
+					最大精力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>speed</td>
+	<td>
+					走一格所需的豪秒数<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Aptitude"><!-- --></A>
+<h1>Aptitude</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>backpackLoad</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>bodyLoad</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>brawn</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hpCapacity</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>mpCapacity</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>minAttack</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxAttack</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>minMagicAttack</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxMagicAttack</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>minTaoismAttack</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxTaoismAttack</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>minDefend</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxDefend</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>minMagicDefend</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxMagicDefend</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hit</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>agile</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>magicHit</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>magicDodge</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hpRecoverRate</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>mpRecoverRate</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="AroundPlayer"><!-- --></A>
+<h1>AroundPlayer</h1>
+	<p>
+		周围玩家信息<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>roleName</td>
+	<td>
+					角色名称<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+					角色id<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>profession</td>
+	<td>
+					职业<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>level</td>
+	<td>
+					等级<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Defender"><!-- --></A>
+<h1>Defender</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>target</td>
+	<td>
+					目标ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>dodge</td>
+	<td>
+					是否躲避了 0 无躲避 1躲避<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>targetHp</td>
+	<td>
+					对象中招后的体力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>targetMp</td>
+	<td>
+					对象中招后的精力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>damage</td>
+	<td>
+					伤害值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>status</td>
+	<td>
+					接招人的状态<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Equipment"><!-- --></A>
+<h1>Equipment</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>clazz</td>
+	<td>
+					装备类别 1 武器、2 衣服、3 头盔、4 项链、5 戒指、6 手镯、7 腰带、8 鞋<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#Goods">Goods</a>
+		</td>
+	<td>goods</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>avatar</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="FightSkill"><!-- --></A>
+<h1>FightSkill</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>id</td>
+	<td>
+					技能ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>level</td>
+	<td>
+					技能等级<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>nextLevelRequiredlevel</td>
+	<td>
+					下一级所需人物等级<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>nextLevelRequiredGold</td>
+	<td>
+					下一级所需金币<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>nextLevelRequiredTime</td>
+	<td>
+					下一级所需时间，秒<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>nextLevelDescription</td>
+	<td>
+					下一级描述<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>targetScope</td>
+	<td>
+					技能目标范围类型<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>skillEffect</td>
+	<td>
+					技能效果类型<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>value</td>
+	<td>
+					技能的效果值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>exStatus</td>
+	<td>
+					技能的会引起的异常状态 0 为没有<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>shortcuts</td>
+	<td>
+					快捷栏编号<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Folder"><!-- --></A>
+<h1>Folder</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>id</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#Goods">Goods</a>
+		</td>
+	<td>goods</td>
+	<td>
+					格子中物品<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>quantity</td>
+	<td>
+					物品数量<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>golden</td>
+	<td>
+					售价<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="FunctionRole"><!-- --></A>
+<h1>FunctionRole</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#RoleBase">RoleBase</a>
+		</td>
+	<td>roleBase</td>
+	<td>
+					角色基本信息<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>function</td>
+	<td>
+					NPC类型<br />
+				1:地图切换点<br />
+				2、3、4……:功能编号<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>animActionId</td>
+	<td>
+					动作编号<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>flipMode</td>
+	<td>
+					NPC动画翻转(0无反转，1反）<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>stat</td>
+	<td>
+					NPC状态（标识叹号、问号等）<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+					NPC 所在位置<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>intro</td>
+	<td>
+					npc说明<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="GamePlayer"><!-- --></A>
+<h1>GamePlayer</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#ActiveRole">ActiveRole</a>
+		</td>
+	<td>activeRole</td>
+	<td>
+					角色基本信息<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>level</td>
+	<td>
+					级别<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>experience</td>
+	<td>
+					经验值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>nextLevelExperience</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>profession</td>
+	<td>
+					职业名称<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#Aptitude">Aptitude</a>
+		</td>
+	<td>aptitude</td>
+	<td>
+					角色个人资质<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>factionId</td>
+	<td>
+					玩家所属行会ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>factionName</td>
+	<td>
+					玩家所属行会名称<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>effect</td>
+	<td>
+					身上的特效<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#Equipment">Equipment</a>&gt;
+		</td>
+	<td>equipments</td>
+	<td>
+					身上的装备<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Goods"><!-- --></A>
+<h1>Goods</h1>
+	<p>
+		物品<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>id</td>
+	<td>
+					编号<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>name</td>
+	<td>
+					名称<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>icon</td>
+	<td>
+					图标<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>figure</td>
+	<td>
+					地图形象<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>desc</td>
+	<td>
+					描述<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>price</td>
+	<td>
+					价格<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>priceType</td>
+	<td>
+					价格类型，1:金币<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>additionProperty</td>
+	<td>
+					附加属性<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>availableTime</td>
+	<td>
+					可用次数<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="MapTeam"><!-- --></A>
+<h1>MapTeam</h1>
+	<p>
+		队伍信息<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>teamName</td>
+	<td>
+					队伍名称<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>leaderId</td>
+	<td>
+					队长id<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>amount</td>
+	<td>
+					人数<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="NpcDialog"><!-- --></A>
+<h1>NpcDialog</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>icon</td>
+	<td>
+					交互框上的形象<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>welcome</td>
+	<td>
+					NPC的欢迎语，功能列表上的一句话<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>description</td>
+	<td>
+					npc的一句说明<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#Option">Option</a>&gt;
+		</td>
+	<td>options</td>
+	<td>
+					NPC的功能列表<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Option"><!-- --></A>
+<h1>Option</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>id</td>
+	<td>
+					选项编号<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>titel</td>
+	<td>
+					选项标题<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>exit</td>
+	<td>
+					1 退出交互 0 不是<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="ProfessionInfo"><!-- --></A>
+<h1>ProfessionInfo</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>id</td>
+	<td>
+					职业ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>name</td>
+	<td>
+					职业名<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>desc</td>
+	<td>
+					描述<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>figure</td>
+	<td>
+					形象<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>gender</td>
+	<td>
+					性别 1 男 2 女<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push0"><!-- --></A>
+<h1>Push0</h1>
+	<p>
+		公共的提示文字<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>msg</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1010"><!-- --></A>
+<h1>Push1010</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>pkValue</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>washTime</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>onceWashPkValue</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>onceWashMoney</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1105"><!-- --></A>
+<h1>Push1105</h1>
+	<p>
+		服务器通知客户端同屏玩家位置状态改变<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>playerId</td>
+	<td>
+					改变状态的玩家ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>face</td>
+	<td>
+					玩家面向的方向 0:上、1:左上、2:左、3:左下、4下:、5:右下、6:右、7:右上<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>moveState</td>
+	<td>
+					玩家移动状态 0:静止 1:移动<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>touchX</td>
+	<td>
+					移动触摸点 移动状态为1时有效<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>touchY</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>newEnter</td>
+	<td>
+					该玩家是否新进入视野玩家标志，1:新进入 0:同屏玩家<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#ActiveRole">ActiveRole</a>
+		</td>
+	<td>activeRole</td>
+	<td>
+					玩家角色的基本信息，当不是新进入玩家时该项为空<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+					玩家角色的位置，当不是新进入玩家时该项为空<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>ownerId</td>
+	<td>
+					召唤物主人ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>flag</td>
+	<td>
+					角色头顶上方的图标 0=正常显示 1=申组   2=邀组<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1106"><!-- --></A>
+<h1>Push1106</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>mapId</td>
+	<td>
+					进入到的地图ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+					进入后的位置<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#FunctionRole">FunctionRole</a>&gt;
+		</td>
+	<td>functionNpcs</td>
+	<td>
+					地图中的功能性NPC列表<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>mapName</td>
+	<td>
+					地图名<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>mapType</td>
+	<td>
+					地图类型 1 pvp 2 pve 3 城市<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>channel</td>
+	<td>
+					当前所在频道<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1107"><!-- --></A>
+<h1>Push1107</h1>
+	<p>
+		通知客户端指定的玩家已离开视野<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>playerId</td>
+	<td>
+					离开视野玩家ID<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1108"><!-- --></A>
+<h1>Push1108</h1>
+	<p>
+		通知客户端指定的玩家已离开<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>playerId</td>
+	<td>
+					退出玩家ID<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1109"><!-- --></A>
+<h1>Push1109</h1>
+	<p>
+		通知客户端指定的角色向特定目标移动<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+					触发移动的角色ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>moveMode</td>
+	<td>
+					移动的方式 0 瞬移，1 正常移动, 2 野蛮冲撞，3 狮子吼，4 抗拒火环<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#RolePosition">RolePosition</a>&gt;
+		</td>
+	<td>rolePositions</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1110"><!-- --></A>
+<h1>Push1110</h1>
+	<p>
+		npc任务状态变化<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>type</td>
+	<td>
+					0=普通  1=任务可授予 2=有任务可提交<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>npcId</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1124"><!-- --></A>
+<h1>Push1124</h1>
+	<p>
+		指定的技能改变了 升级了  学会了<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#FightSkill">FightSkill</a>
+		</td>
+	<td>skill</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1125"><!-- --></A>
+<h1>Push1125</h1>
+	<p>
+		角色技能信息<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#SkillBase">SkillBase</a>&gt;
+		</td>
+	<td>professionSkills</td>
+	<td>
+					角色所属职业的所有技能<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#FightSkill">FightSkill</a>&gt;
+		</td>
+	<td>fightSkills</td>
+	<td>
+					角色所有已学会的技能<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1127"><!-- --></A>
+<h1>Push1127</h1>
+	<p>
+		游戏中的功能弹板<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>text</td>
+	<td>
+					提示文字<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>align</td>
+	<td>
+					对齐方式 0 水平 1 垂直<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#Option">Option</a>&gt;
+		</td>
+	<td>options</td>
+	<td>
+					选项列表<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>time</td>
+	<td>
+					显示时间，倒记时，单位秒，为0不需要设置倒计时<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>defaultId</td>
+	<td>
+					默认选项ID<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1202"><!-- --></A>
+<h1>Push1202</h1>
+	<p>
+		战斗中角色出招信息<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>source</td>
+	<td>
+					出招者<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>skillType</td>
+	<td>
+					技能类型 0 物理 1 魔法<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>showEffect</td>
+	<td>
+					出招展示效果<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>doubleAttack</td>
+	<td>
+					是否是暴击 1 是 0 不是<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>attackerHp</td>
+	<td>
+					对象出招后的体力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>attackerMp</td>
+	<td>
+					对象出招后的精力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>lockMode</td>
+	<td>
+					锁定方式 1 直接选取，2目标范围地块，3 自身周围地块，4 自身前方选取，5 自身<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+					攻击的目的坐标<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#Defender">Defender</a>&gt;
+		</td>
+	<td>defenders</td>
+	<td>
+					接招人，可能为空<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1203"><!-- --></A>
+<h1>Push1203</h1>
+	<p>
+		角色复活<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hp</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>mp</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>map</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1204"><!-- --></A>
+<h1>Push1204</h1>
+	<p>
+		角色状态改变<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hp</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>mp</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxhp</td>
+	<td>
+					最大体力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxmp</td>
+	<td>
+					最大精力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#Aptitude">Aptitude</a>
+		</td>
+	<td>aptitude</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>status</td>
+	<td>
+					获得的状态<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1205"><!-- --></A>
+<h1>Push1205</h1>
+	<p>
+		角色变身（诱惑之光将怪物召唤为宝宝）<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>oldRoleId</td>
+	<td>
+					旧的角色ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>newRoleId</td>
+	<td>
+					新的角色ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>face</td>
+	<td>
+					角色面向的方向 0:上、1:左上、2:左、3:左下、4下:、5:右下、6:右、7:右上<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>ownerId</td>
+	<td>
+					宝宝的主人ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#ActiveRole">ActiveRole</a>
+		</td>
+	<td>activeRole</td>
+	<td>
+					新角色的基本信息<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+					新角色的位置<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1207"><!-- --></A>
+<h1>Push1207</h1>
+	<p>
+		PK开关的开启/关闭<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>status</td>
+	<td>
+					0 关闭 1 开启<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1208"><!-- --></A>
+<h1>Push1208</h1>
+	<p>
+		PK模式<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+					角色ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>status</td>
+	<td>
+					1 主动PK 2 被动 3 不PK<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1209"><!-- --></A>
+<h1>Push1209</h1>
+	<p>
+		角色复活<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hp</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>mp</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>status</td>
+	<td>
+					获得的状态<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1303"><!-- --></A>
+<h1>Push1303</h1>
+	<p>
+		指定部位的装备发生改变<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>pob</td>
+	<td>
+					部位 0 头 1 颈 2 身 3 腰 4 手 5 左腕 6 右腕 7 左指 8 右指 9脚<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#Equipment">Equipment</a>
+		</td>
+	<td>equipment</td>
+	<td>
+					穿着的装备 卸下装备时为null<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#Aptitude">Aptitude</a>
+		</td>
+	<td>aptitude</td>
+	<td>
+					当前角色新的属性<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hp</td>
+	<td>
+					当前体、精<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>mp</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxhp</td>
+	<td>
+					最大体力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxmp</td>
+	<td>
+					最大精力值<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1304"><!-- --></A>
+<h1>Push1304</h1>
+	<p>
+		当角色换装成功后，通知地图上的其它人<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hp</td>
+	<td>
+					换装后的hp,mp<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>mp</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxHp</td>
+	<td>
+					换装后的hp,mp总量<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxMp</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>pob</td>
+	<td>
+					穿着的部位  0 头 1 颈 2 身 3 腰 4 手 5 左腕 6 右腕 7 左指 8 右指 9脚<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>avatar</td>
+	<td>
+					人物穿着效果，无为null<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1305"><!-- --></A>
+<h1>Push1305</h1>
+	<p>
+		通知背包中某格子状态改变了<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>source</td>
+	<td>
+					1 快捷栏; 2 背包<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#Folder">Folder</a>
+		</td>
+	<td>folder</td>
+	<td>
+					发生变化的格子<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1402"><!-- --></A>
+<h1>Push1402</h1>
+	<p>
+		通知玩家进入了队伍（只发给新进入的人）<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>leaderId</td>
+	<td>
+					队长ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#TeamMember">TeamMember</a>&gt;
+		</td>
+	<td>members</td>
+	<td>
+					队伍成员列表<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>teamName</td>
+	<td>
+					队伍的名字<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1403"><!-- --></A>
+<h1>Push1403</h1>
+	<p>
+		队中成员变化<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#TeamMember">TeamMember</a>
+		</td>
+	<td>member</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1404"><!-- --></A>
+<h1>Push1404</h1>
+	<p>
+		队中成员的队伍状态有变化<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>stat</td>
+	<td>
+					成员状态 1=退出队伍 2=死了 3=成为队长 4=红名   等等待定<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>playerId</td>
+	<td>
+					变更的成员<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>mapId</td>
+	<td>
+					角色所在地图 用来远离队伍判断<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1407"><!-- --></A>
+<h1>Push1407</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>inviteToTeam</td>
+	<td>
+					缺人  0为未勾选   1为勾选<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>rejectTeam</td>
+	<td>
+					0为未勾选   1为勾选<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1409"><!-- --></A>
+<h1>Push1409</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#MapTeam">MapTeam</a>&gt;
+		</td>
+	<td>members</td>
+	<td>
+					队伍成员列表<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1411"><!-- --></A>
+<h1>Push1411</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#AroundPlayer">AroundPlayer</a>&gt;
+		</td>
+	<td>members</td>
+	<td>
+					队伍成员列表<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Push1412"><!-- --></A>
+<h1>Push1412</h1>
+	<p>
+		客户端通知队伍成员队伍名字变更<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>teamName</td>
+	<td>
+					队伍名字<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1001"><!-- --></A>
+<h1>Req1001</h1>
+	<p>
+		玩家角色进入游戏<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>passportId</td>
+	<td>
+					通行证ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>sessionId</td>
+	<td>
+					会话ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+					要登入的角色ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>viewWidth</td>
+	<td>
+					玩家的视野宽度<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>viewHeight</td>
+	<td>
+					玩家的视野高度<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1102"><!-- --></A>
+<h1>Req1102</h1>
+	<p>
+		客户端通知服务器玩家开始向某个方向移动。<br/>
+		只在持绪行走时才发送<br/>
+		无回复。触发服务器计算同屏<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>direction</td>
+	<td>
+					0:上、1:左上、2:左、3:左下、4下:、5:右下、6:右、7:右上<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>touchX</td>
+	<td>
+					触摸点<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>touchY</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1103"><!-- --></A>
+<h1>Req1103</h1>
+	<p>
+		玩家在移动过程中，客户端定时发送玩家位置给服务器，<br/>
+		服务器同步给其他同屏玩家。<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+					玩家的位置坐标<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1104"><!-- --></A>
+<h1>Req1104</h1>
+	<p>
+		玩家在客户端地图中从停止在某格子时，客户端通知服务器玩家停止的坐标。<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>cause</td>
+	<td>
+					停止的原因 0 主动停止 1 触碰到不可通过的块<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+					玩家停止的坐标<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1111"><!-- --></A>
+<h1>Req1111</h1>
+	<p>
+		切换频道<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>idx</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1122"><!-- --></A>
+<h1>Req1122</h1>
+	<p>
+		装卸技能快捷栏<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>flag</td>
+	<td>
+					0装配技能   1卸载技能<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>skillId</td>
+	<td>
+					技能ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>shortcut</td>
+	<td>
+					要装配或者卸载的快捷栏索引，0为默认技能<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1128"><!-- --></A>
+<h1>Req1128</h1>
+	<p>
+		回复客户端选择的选项<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>id</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1129"><!-- --></A>
+<h1>Req1129</h1>
+	<p>
+		请求与指定的NPC交互<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>npcId</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1130"><!-- --></A>
+<h1>Req1130</h1>
+	<p>
+		选择了NPC界面中的功能<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>functionId</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1201"><!-- --></A>
+<h1>Req1201</h1>
+	<p>
+		攻击目标<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>targetId</td>
+	<td>
+					目标ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>face</td>
+	<td>
+					角色面向的方向 0:上、1:左上、2:左、3:左下、4下:、5:右下、6:右、7:右上<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+					目标坐标<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>number</td>
+	<td>
+					技能：对应技能栏编号<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1206"><!-- --></A>
+<h1>Req1206</h1>
+	<p>
+		更改宝宝攻击模式<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>petMode</td>
+	<td>
+					1、攻击 2、跟随 3、休息<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1207"><!-- --></A>
+<h1>Req1207</h1>
+	<p>
+		PK开关的开启/关闭<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>status</td>
+	<td>
+					0 关闭 1 开启<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1302"><!-- --></A>
+<h1>Req1302</h1>
+	<p>
+		使用物品<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>source</td>
+	<td>
+					1 快捷栏; 2 背包<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>index</td>
+	<td>
+					物品位置索引<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1303"><!-- --></A>
+<h1>Req1303</h1>
+	<p>
+		将背包中的装备穿上<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>folderId</td>
+	<td>
+					格子ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>pob</td>
+	<td>
+					要穿着的部位 0 头 1 颈 2 身 3 腰 4 手 5 左腕 6 右腕 7 左指 8 右指 9脚<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1306"><!-- --></A>
+<h1>Req1306</h1>
+	<p>
+		调整道具放置位置<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>sourceFolderId</td>
+	<td>
+					起始位置<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>targetFolderId</td>
+	<td>
+					目的位置<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1307"><!-- --></A>
+<h1>Req1307</h1>
+	<p>
+		卸下指定部位的装备<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>pob</td>
+	<td>
+					部位 0 头 1 颈 2 身 3 腰 4 手 5 左腕 6 右腕 7 左指 8 右指 9脚<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1401"><!-- --></A>
+<h1>Req1401</h1>
+	<p>
+		组队申请  或者队长邀请他人组队<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>playerId</td>
+	<td>
+					申请人或者邀请人<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1405"><!-- --></A>
+<h1>Req1405</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>index</td>
+	<td>
+					复选框编号 0, 1<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>fuctionValue</td>
+	<td>
+					设置状态值  0=取消  1=选中<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1406"><!-- --></A>
+<h1>Req1406</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>fuctionType</td>
+	<td>
+					选中的按钮编号 0开除队伍 1队长移交 2解散队伍  3退出队伍<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>playerId</td>
+	<td>
+					目标玩家id    队长解散队伍和队员退出队伍的时候为0<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1408"><!-- --></A>
+<h1>Req1408</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>type</td>
+	<td>
+					0=查看队伍  1=查看玩家<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Req1410"><!-- --></A>
+<h1>Req1410</h1>
+	<p>
+		队长提交要更改队伍名字<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>teamName</td>
+	<td>
+					客户端要更改的队伍名字<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="RoleBase"><!-- --></A>
+<h1>RoleBase</h1>
+	<p>
+		角色基本信息<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+					角色ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>name</td>
+	<td>
+					名字<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>gender</td>
+	<td>
+					性别 1 男 0 女<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>faceId</td>
+	<td>
+					头像<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>figure</td>
+	<td>
+					地图形象<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>title</td>
+	<td>
+					称号(玩家在游戏中可能获得多个称号，自己选当前使用哪个) 无则null<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="RolePosition"><!-- --></A>
+<h1>RolePosition</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+					角色ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+					目标<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Rsp1001"><!-- --></A>
+<h1>Rsp1001</h1>
+	<p>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#GamePlayer">GamePlayer</a>
+		</td>
+	<td>player</td>
+	<td>
+					玩家登录的角色的详细信息<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#Folder">Folder</a>&gt;
+		</td>
+	<td>folders</td>
+	<td>
+					快捷栏格子列表<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Rsp1004"><!-- --></A>
+<h1>Rsp1004</h1>
+	<p>
+		可用的人物职业<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#ProfessionInfo">ProfessionInfo</a>&gt;
+		</td>
+	<td>professions</td>
+	<td>
+					可用的职业信息<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Rsp1111"><!-- --></A>
+<h1>Rsp1111</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>idx</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>x</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>y</td>
+	<td>
+		&nbsp;
+		</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Rsp1129"><!-- --></A>
+<h1>Rsp1129</h1>
+	<p>
+		回复交互NPC信息<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	<a href="Message.html#NpcDialog">NpcDialog</a>
+		</td>
+	<td>npcDialog</td>
+	<td>
+					返回NPC对话主界面<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Rsp1301"><!-- --></A>
+<h1>Rsp1301</h1>
+	<p>
+		背包中格子列表<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	List&lt;<a href="Message.html#Folder">Folder</a>&gt;
+		</td>
+	<td>folders</td>
+	<td>
+					格子列表<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="Shortcut"><!-- --></A>
+<h1>Shortcut</h1>
+	<p>
+		技能栏信息<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>index</td>
+	<td>
+					技能快捷栏索引号<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>skillId</td>
+	<td>
+					技能ID<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="SkillBase"><!-- --></A>
+<h1>SkillBase</h1>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>id</td>
+	<td>
+					技能ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>name</td>
+	<td>
+					技能名<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>description</td>
+	<td>
+					技能说明<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>icon</td>
+	<td>
+					技能图标<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>useModel</td>
+	<td>
+					使用类型<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>filterType</td>
+	<td>
+					过滤类型<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+<hr />
+<A name="TeamMember"><!-- --></A>
+<h1>TeamMember</h1>
+	<p>
+		队伍成员信息<br/>
+		</p>
+	<TABLE BORDER="1" WIDTH="90%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+  <tr BGCOLOR="#CCCCFF">
+    <th width="10%" scope="col">数据类型</th>
+    <th width="10%" scope="col">变量名</th>
+    <th scope="col">说明</th>
+  </tr>
+    <tr valign="top">
+	<td>
+	long
+		</td>
+	<td>roleId</td>
+	<td>
+					角色ID<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>name</td>
+	<td>
+					名字<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	byte
+		</td>
+	<td>profession</td>
+	<td>
+					职业<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	short
+		</td>
+	<td>level</td>
+	<td>
+					等级<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>hp</td>
+	<td>
+					体力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>mp</td>
+	<td>
+					精力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxhp</td>
+	<td>
+					最大体力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	int
+		</td>
+	<td>maxmp</td>
+	<td>
+					最大精力值<br />
+				</td>
+  </tr>
+    <tr valign="top">
+	<td>
+	String
+		</td>
+	<td>mapId</td>
+	<td>
+					所在场景<br />
+				</td>
+  </tr>
+  </table>
+<p>&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="GB2312"?>
+
+<project name="MessageCompiler AntTask test" default="compile" basedir=".">
+	<description>Message Compiler Project.</description>
+
+	<property name="mc.home" location="c:/tools/mc"/>
+	<property name="src.dir" location="./src"/>
+
+	<taskdef
+		classname="com.SNDA.foundation.mc.anttask.MessageCompilerTask"
+		name="cmpmsg"
+		classpath="${mc.home}/mc.jar"/>
+
+	<target name="compile">
+		<cmpmsg stub="server" package="test" encoding="UTF-8" srcdir="./" mapclass="MyMap" mdlfile="test.mdl"/>
+	</target>
+
+</project>

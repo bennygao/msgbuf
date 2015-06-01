@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="MessageCompiler" default="dist" basedir=".">
+	<description>Message Compiler Project.</description>
+
+	<property file="build.properties"/>	
+	<property name="src.dir" location="./src"/>
+	<property name="build.dir" location="./build"/>
+	<property name="classes.dir" location="${build.dir}/classes"/>
+	<property name="lib.dir" location="./lib"/>
+	<property name="doc.dir" location="./doc"/>
+	<property name="dist.dir" location="./dist"/>
+	<property name="dist.lib.dir" location="${dist.dir}/lib"/>
+	<property name="dist.doc.dir" location="${dist.dir}/doc"/>
+	<property name="dist.bin.dir" location="${dist.dir}/bin"/>
+	<property name="vm.dir" location="./vm"/>
+	<property name="dist.zip" location="mc-${version}.zip"/>
+	<property name="messagecompiler.jar" location="${dist.bin.dir}/messagecompiler-${version}.jar"/>
+	<property name="messagebuffer.jar" location="${dist.lib.dir}/java/msgbuf-${version}.jar"/>
+
+	<property name="calibur.dll" location="${calibur.csharp.dir}/Calibur.dll" />
+	<property name="android.so" location="runtime/cpp/Android/libs/armeabi/libmsgbuf.so" />
+
+	<path id="project.classpath">
+        <fileset dir="${lib.dir}">
+          <include name="**/*.jar"/>
+        </fileset>
+	</path>
+
+ 	<target name="prepare"
+			description="Preparing environment">
+		<mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${dist.lib.dir}"/>
+		<mkdir dir="${dist.doc.dir}"/>
+		<mkdir dir="${dist.bin.dir}"/>
+    </target>
+
+	<target name="all" depends="dist"
+		description="Generate binary code">
+	</target>
+
+	<target name="compile" depends="prepare"
+			description="Compile the Java sources to classes">
+		<javac
+			srcdir="${src.dir}"
+			destdir="${classes.dir}"
+			encoding="UTF-8"
+			source="1.6"
+			target="1.6"
+			debug="on">
+			<classpath>
+				<path refid="project.classpath"/>
+			</classpath>
+		</javac>
+	</target>
+
+ 	<target name="messagecompiler" depends="messagebuffer">
+		<unjar src="${lib.dir}/commons-cli-1.1.jar" dest="${classes.dir}" />
+		<unjar src="${lib.dir}/velocity-1.7.jar" dest="${classes.dir}" />
+		<unjar src="${lib.dir}/velocity-1.7-dep.jar" dest="${classes.dir}" />
+		<unjar src="${lib.dir}/commons-logging-1.0.4.jar" dest="${classes.dir}" />
+		<unjar src="${lib.dir}/commons-collections-3.1.jar" dest="${classes.dir}" />
+
+		<jar jarfile="${messagecompiler.jar}">
+			<fileset dir="${classes.dir}" includes="**/*.class,**/*.properties"/>
+			<fileset dir="${src.dir}" includes="**/*.txt"/>
+			<fileset dir="${vm.dir}" includes="**/*.vm"/>
+			<!-- <fileset dir="${lib.dir}" includes="**/*.jar,**/*.properties"/> -->
+			<manifest>
+				<attribute name="Main-Class" value="net.sf.calibur.msgbuf.compiler.MessageCompiler"/>
+				<!-- <attribute name="Class-Path" value="lib/ vm/ lib/commons-cli-1.1.jar lib/commons-collections-3.1.jar lib/commons-logging-1.0.4.jar lib/jdom.jar lib/junit-4.4.jar lib/log4j-1.2.9.jar lib/mina-core-1.1.7.jar lib/velocity-1.4.jar"/> -->
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+		</jar>
+    </target>
+
+ 	<target name="messagebuffer" depends="compile">
+		<jar jarfile="${messagebuffer.jar}">
+			<fileset dir="${classes.dir}" excludes="**/compiler/**"/>
+			<fileset dir="${classes.dir}" excludes="**/test/**"/>
+			<fileset dir="${src.dir}" includes="**/*.txt"/>
+		</jar>
+    </target>	
+
+	<target name="bin" depends="messagecompiler">
+		<echo
+			file="${dist.bin.dir}/mc.bat">@echo off
+java -jar %~dp0\messagecompiler-${version}.jar %*
+		</echo>
+	</target>
+
+	<target name="runtime" depends="">
+		<copy file="${calibur.dll}" todir="${dist.dir}/lib/csharp"/>
+		<copy file="${android.so}" todir="${dist.dir}/lib/cpp/android"/>
+	</target>
+	
+	<target name="calibur-csharp">
+		<echo>${calibur.csharp.dir}</echo>
+		<exec dir="${calibur.csharp.dir}" executable="${mono.dir}/mdtool">
+			<arg value="build"/>
+			<arg value="-c:Release"/>
+			<arg value="Calibur.sln"/>
+		</exec>
+	</target>
+			
+
+	<target name="dist" depends="messagebuffer,messagecompiler,bin,runtime">
+		<copy todir="${dist.doc.dir}">
+			<!--
+			<fileset dir="${doc.dir}" includes="**/*.bat,**/*.sh,**/*.html,**/*.css,**/*.js,**/*.h,**/*.m,**/*.png,**/*.jpg" />
+			-->
+			<fileset dir="${doc.dir}" includes="*.pdf" />
+		</copy>
+		<zip destfile="${dist.zip}" basedir="${dist.dir}" />
+	</target>
+  
+	<target name="clean" description="Delete all generated files">
+	    <delete dir="${classes.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${build.dir}" />
+		<delete dir="runtime/cpp/Android/libs" />
+		<delete dir="runtime/cpp/Android/obj" />
+		<delete file="${dist.zip}" />
+		<delete file="velocity.log" />
+		<delete file="velocity.log.1" />
+	</target>
+</project>

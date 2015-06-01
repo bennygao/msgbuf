@@ -1,0 +1,390 @@
+/**
+ * 游戏中所有数据模型
+ */
+
+/**
+ * 职业信息
+ */ 
+message ProfessionInfo {
+	/** 职业ID*/
+	byte id;
+	/** 职业名*/
+	String name;
+	/** 描述*/
+	String desc;
+	/** 形象*/
+	String figure;
+	/** 性别 1 男 2 女*/
+	byte gender;
+}
+ 
+/**
+ * 角色基本信息
+ */
+message RoleBase {
+
+	/** 角色ID */
+	long roleId;
+
+	/** 名字 */
+	String name = "传世小强";
+
+	/** 性别 1 男 0 女*/
+	byte gender = 1;
+
+	/** 头像 */
+	String faceId;
+	
+	/** 地图形象 */
+	String figure;
+	
+	/** 称号(玩家在游戏中可能获得多个称号，自己选当前使用哪个) 无则null*/
+	String title;
+}
+
+/**
+ * 地图中活动角色(玩家、怪)基本信息，为满足地图显示需要
+ */
+message ActiveRole {
+	/** 角色基本信息 */
+	RoleBase roleBase;
+	
+	/** 头 无则null*/
+	String head;
+	
+	/** 身 无则null*/
+	String body;
+	
+	/** 手 无则null*/
+	String hand;
+	
+	/** 职业名称 */
+	String profession="武士";
+	
+	/** 角色类型 0: 玩家 1:怪 2 npc*/
+	byte type = 0;
+	
+	/**  角色状态 0 无 1 死亡 2 红名*/
+	byte stat = 0;
+	
+	/** 体力值 */
+	int hp=130;
+
+	/** 精力值 */
+	int mp=90;
+
+	/** 最大体力值 */
+	int maxhp=3900;
+
+	/** 最大精力值 */
+	int maxmp=10100;
+	
+	/** 走一格所需的豪秒数 */
+	short speed = 1;
+}
+
+/**
+ * 地图中功能角色（NPC）基本信息，为满足地图显示需要
+ */
+message FunctionRole {
+	/** 角色基本信息 */
+	RoleBase roleBase;	
+	/**
+	 * NPC类型	
+	 * 1:地图切换点	 
+	 * 2、3、4……:功能编号
+	 */
+	byte function;
+	
+	/** 动作编号*/
+	byte animActionId;
+	
+	/** NPC动画翻转(0无反转，1反）*/
+	byte flipMode;
+	/**  NPC状态（标识叹号、问号等）*/
+	byte stat;
+	
+	/** NPC 所在位置*/
+	short x;
+	short y;
+	/** npc说明 */
+	String intro;
+}
+message Aptitude {
+	// 背包负重
+	int backpackLoad;
+	// 身体负重
+	int bodyLoad;
+	// 腕力
+	int brawn;
+	// HP、MP容量
+	int hpCapacity;
+	int mpCapacity;
+	// 最大、最小攻击力
+	int minAttack;
+	int maxAttack;
+	// 最大、最小魔法攻击力
+	int minMagicAttack;
+	int maxMagicAttack;
+	// 最大、最小道术攻击力
+	int minTaoismAttack;
+	int maxTaoismAttack;
+	// 最大、最小防御
+	int minDefend;
+	int maxDefend;
+	// 最大、最小魔法
+	int minMagicDefend;
+	int maxMagicDefend;
+	// 命中
+	int hit;
+	// 敏捷
+	int agile;
+	// 魔法命中
+	int magicHit;
+	// 魔法躲避
+	int magicDodge;	
+	// 每秒回复HP、MP速率
+	int hpRecoverRate;	
+	int mpRecoverRate;
+}
+
+/**
+ * 玩家信息
+ */
+message GamePlayer {
+
+	/** 角色基本信息 */
+	ActiveRole activeRole;
+
+	/** 级别 */
+	short level = 1;
+
+	/** 经验值 */
+	int experience=1000;
+	
+	// 下一级所需经验
+	int nextLevelExperience;
+
+	/** 职业名称 */
+	String profession="武士";
+
+	/** 角色个人资质 */
+	Aptitude aptitude;
+
+	/** 玩家所属行会ID */
+	short factionId=1;
+
+	/** 玩家所属行会名称 */
+	String factionName="最强势力";
+	
+	/** 身上的特效*/
+	String effect;
+	
+	/** 身上的装备*/
+	List<Equipment> equipments;	
+}
+
+/**
+ * 物品
+ */
+message Goods {
+	/** 编号*/
+	String id;
+	/** 名称*/
+	String name;
+	/** 图标*/
+	String icon;
+	/** 地图形象 */
+	String figure;
+	/** 描述 */
+	String desc;
+	/** 价格 */
+	int price=1000;	
+	/** 价格类型，1:金币*/
+	byte priceType=1;	
+	/** 附加属性 */
+	short additionProperty;
+	/** 可用次数*/
+	byte availableTime;
+}
+
+/**
+ * 装备
+ */
+message Equipment {
+	/** 装备类别 1 武器、2 衣服、3 头盔、4 项链、5 戒指、6 手镯、7 腰带、8 鞋*/
+	byte clazz;
+	Goods goods;
+	String avatar;
+}
+
+/**
+ * 技能基础信息
+ */
+message SkillBase {
+	/** 技能ID*/
+	String id;
+	/** 技能名*/
+	String name;
+	/** 技能说明*/
+	String description;
+	/** 技能图标*/
+	String icon;
+	/** 使用类型 */
+	byte useModel;
+	/** 过滤类型 */
+	byte filterType;
+}
+
+/**
+ * 已学会的技能
+ */
+message FightSkill {
+	/** 技能ID*/
+	String id;
+	/** 技能等级*/
+	byte level;
+	/** 下一级所需人物等级*/
+	int nextLevelRequiredlevel;
+	/** 下一级所需金币*/
+	int nextLevelRequiredGold;
+	/** 下一级所需时间，秒*/
+	int nextLevelRequiredTime;
+	/** 下一级描述*/
+	int nextLevelDescription;
+	/** 技能目标范围类型*/
+	byte targetScope;
+	/** 技能效果类型*/
+	byte skillEffect;
+	/** 技能的效果值*/
+	int value;	
+	/** 技能的会引起的异常状态 0 为没有*/
+	byte exStatus;
+	/**快捷栏编号*/
+	byte shortcuts;
+}
+
+/**
+ * 技能栏信息
+ */
+message Shortcut {
+	/** 技能快捷栏索引号 */
+	byte index;
+	/** 技能ID*/
+	String skillId;
+}
+
+message Folder {
+	short id;
+	/** 格子中物品 */
+	Goods goods;
+	/** 物品数量 */
+	byte quantity;
+	/** 售价 */
+	int golden;
+}
+
+/**
+ * 防守者
+ */
+message Defender {
+	/** 目标ID */
+	long target;	
+	/** 是否躲避了 0 无躲避 1躲避 */
+	byte dodge;	
+	/** 对象中招后的体力值 */
+	int targetHp;
+	/** 对象中招后的精力值 */
+	int targetMp;	
+	/** 伤害值*/
+	int damage;	
+	/** 接招人的状态*/
+	short status;
+}
+
+/**
+ * 队伍成员信息
+ */
+message TeamMember {
+	/** 角色ID */
+	long roleId;
+	/** 名字 */
+	String name = "传世小强";
+    /** 职业 */
+	byte profession;
+	/** 等级 */
+	short level = 1;	
+	/** 体力值 */
+	int hp=130;
+	/** 精力值 */
+	int mp=90;
+	/** 最大体力值 */
+	int maxhp=3900;
+	/** 最大精力值 */
+	int maxmp=10100;
+	/** 所在场景 */
+	String mapId;
+}
+
+/**
+ * 队伍信息
+ */
+message MapTeam {
+	/** 队伍名称 */
+	String teamName;
+	/** 队长id	*/
+	long leaderId;
+	/** 人数 */
+	byte amount;
+}
+
+/**
+ * 周围玩家信息
+ */
+message AroundPlayer {
+	/** 角色名称 */
+	String roleName;
+	/** 角色id	*/
+	long roleId;
+	/** 职业 */
+	byte profession;
+	/** 等级 */
+	short level = 1;	
+}
+
+/**
+ * 角色位置信息
+ */
+message RolePosition {
+	/** 角色ID*/
+	long roleId;
+	/** 目标*/
+	short x;
+	short y;	
+}
+
+/**
+ * NPC对话框基本信息
+ */
+message NpcDialog {
+	/** 交互框上的形象*/
+	String icon;
+	/** NPC的欢迎语，功能列表上的一句话*/
+	String welcome;
+	/**npc的一句说明*/
+	String description;
+	/** NPC的功能列表*/
+	List<Option> options;
+}
+
+/**
+ * 弹板的选项
+ */
+message Option {
+	/** 选项编号*/
+	byte id;
+	/** 选项标题*/
+	String titel;
+	/** 1 退出交互 0 不是*/
+	byte exit;
+}

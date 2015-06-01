@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="MdlParserGenerator" default="all" basedir=".">
+	<description>Message Define Language Parser Generator.</description>
+	<echo message="Reading configuration file build.properties"/>
+	<property file="build.properties"/>
+
+	<taskdef
+		classname="JFlex.anttask.JFlexTask"
+		name="jflex"
+		classpath="${jflex.jar}"/>
+
+	<property name="src.dir" value="../src"/>
+	<property name="package.path" value="net/sf/calibur/msgbuf/compiler/parser/mdl"/>
+	<property name="parser.class" value="Parser"/>
+	<property name="parser.package" value="net.sf.calibur.msgbuf.compiler.parser.mdl"/>
+	<property name="parser.implements" value="net.sf.calibur.msgbuf.compiler.parser.Parser"/>
+
+	<property name="grammar" value="mc.y"/>
+	<property name="lexical" value="mc.x"/>
+
+ 	<target name="prepare"
+			description="Preparing environment">
+    </target>
+
+	<target name="all" depends="yacc, lex"
+		description="Generate Mdl Parser and Lexer">
+	</target>
+
+	<target name="yacc"
+			description="Generate Parser class file using yacc">
+		<exec executable="${yacc.command}">
+			<arg line="-Jclass=${parser.class} -Jpackage=${parser.package} ${grammar}"/>
+		</exec>
+		<move file="${parser.class}.java" todir="${src.dir}/${package.path}"/>
+		<move file="${parser.class}Tokens.java" todir="${src.dir}/${package.path}"/>
+		<move file="${parser.class}Val.java" todir="${src.dir}/${package.path}"/>
+	</target>
+
+	<target name="lex"
+		description="Generate lexer class file using jflex">
+		<jflex file="${lexical}"
+			destdir="${src.dir}" encoding="UTF-8" nobak="true"/>
+	</target>
+</project>

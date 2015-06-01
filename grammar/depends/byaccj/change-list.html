@@ -1,0 +1,503 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>New Page 1</title>
+<style>
+<!--
+h1           { background-color: #CCCCCC }
+-->
+</style>
+</head>
+
+<body>
+
+<p>　</p>
+<h1>与生成Java代码相关的全局变量名</h1>
+<ul>
+  <li>char *jclass_name;命令行参数-Jclass=className指定的生成的Parser的类名称，为NULL时未指定。</li>
+  <li>char *jpackage_name;命令行参数-Jpackage=packageName指定的生成的Parser的包名称，为NULL时未指定。</li>
+  <li>char *jextend_name;命令行参数-Jextends=extendName指定的生成的Parser继承的类名称，为NULL时未指定。</li>
+  <li>char *jimplement_name;命令行参数-Jimplements=implementsName指定的生成的Parser实现的接口的名称，为NULL时未指定。</li>
+</ul>
+<h1>需要从原Parser.java中移出的数据项</h1>
+<h2>终极符对应的整数值</h2>
+<blockquote>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="91%" id="AutoNumber1">
+    <tr>
+      <td width="100%"><font face="Courier New" size="2">public final static 
+      short KWD_ABSOLUTE=257;<br>
+      public final static short KWD_ACTION=258;<br>
+      public final static short KWD_ADD=259;<br>
+      public final static short KWD_ALL=260;<br>
+      public final static short KWD_ALTER=261;<br>
+      public final static short KWD_AND=262;<br>
+      public final static short KWD_ANY=263;<br>
+      public final static short KWD_AS=264;<br>
+      public final static short KWD_ASC=265;<br>
+      public final static short KWD_BEGIN_TRANS=266;<br>
+      public final static short KWD_BETWEEN=267;<br>
+      public final static short KWD_BOTH=268;</font></td>
+    </tr>
+  </table>
+</blockquote>
+<ul>
+  <li>修改的位置：output.c中output_defines()</li>
+</ul>
+<blockquote>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="91%" id="AutoNumber1">
+    <tr>
+      <td width="100%"><font size="2" face="Courier New">void 
+      output_defines(void)<br>
+      {<br>
+&nbsp;&nbsp;&nbsp; int c, i;<br>
+&nbsp;&nbsp;&nbsp; char *s;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; for (i = 2; i &lt; ntokens; ++i)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s = symbol_name[i];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (is_C_identifier(s)) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (jflag) /*rwj*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      fprintf(code_file, &quot;<b><font color="#FF0000">public final static short</font></b> 
+      &quot;);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      fprintf(code_file, &quot;#define &quot;);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (dflag) 
+      fprintf(defines_file, &quot;#define &quot;);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c = *s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (c == '&quot;') 
+      {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      while ((c = *++s) != '&quot;') {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      putc(c, code_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      if (dflag) putc(c, defines_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      do {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      putc(c, code_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      if (dflag) putc(c, defines_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      } while ((c = *++s)!=0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++outline;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (jflag) /*rwj*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      fprintf(code_file, &quot;=%d;\n&quot;, symbol_value[i]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      fprintf(code_file, &quot; %d\n&quot;, symbol_value[i]);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (dflag) 
+      fprintf(defines_file, &quot; %d\n&quot;, symbol_value[i]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; ++outline;<br>
+&nbsp;&nbsp;&nbsp; if (jflag) /*rwj*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(code_file, &quot;public final 
+      static short YYERRCODE=%d;\n&quot;, symbol_value[1]);<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(code_file, &quot;#define YYERRCODE 
+      %d\n&quot;, symbol_value[1]);<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (dflag &amp;&amp; unionized) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fclose(union_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; union_file = fopen(union_file_name, 
+      &quot;r&quot;);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (union_file == NULL) 
+      open_error(union_file_name);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while ((c = getc(union_file)) != EOF)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; putc(c, 
+      defines_file);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(defines_file, &quot; YYSTYPE;\nextern 
+      YYSTYPE yylval;\n&quot;);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; fflush(code_file);<br>
+      }</font></td>
+    </tr>
+  </table>
+</blockquote>
+<ul>
+  <li>全局变量char* symbol_name[]中，从下标2开始，存储了所有终极符的名称</li>
+  <li>全局变量int symbol_value[]中，从下标2开始，存储了所有终极符对应的整数值</li>
+</ul>
+<h2>语法规则数据</h2>
+<blockquote>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="91%" id="AutoNumber1">
+    <tr>
+      <td width="100%"><font size="2" face="Courier New">final static short
+      <font color="#FF0000">yylhs</font>[] = { -1,<br>
+      0, 1, 1, 1, 1, 3, 6, 9, 7, 7,<br>
+      7, 12, 7, 7, 11, 11, 13, 13, 5, 16,<br>
+      4, 19, 18, 2, 22, 22, 23, 23, 25, 25,<br>
+      25, 24, 27, 29, 29, 34, 34, 34, 34, 34,<br>
+      35, 35, 26, 26, 28, 28, 28, 28, 32, 32,<br>
+      37, 38, 38, 39, 41, 41, 41, 41, 43, 43,<br>
+      30, 30, 45, 31, 31, 46, 33, 33, 33, 48,<br>
+      48, 47, 47, 21, 21, 21, 49, 50, 50, 51,<br>
+      51, 52, 52, 57, 54, 54, 54, 54, 54, 55,<br>
+      55, 58, 58, 58, 53, 53, 61, 61, 59, 59,<br>
+      ... ...<br>
+      final static short <font color="#FF0000"><b>yylen</b></font>[] = { 2,<br>
+      1, 1, 1, 1, 1, 2, 3, 0, 5, 2,<br>
+      1, 0, 8, 4, 3, 1, 2, 3, 2, 3,<br>
+      5, 1, 2, 1, 3, 1, 1, 3, 2, 1,<br>
+      1, 10, 1, 2, 0, 3, 4, 4, 2, 1,<br>
+      1, 0, 1, 0, 1, 5, 1, 0, 2, 0,<br>
+      2, 1, 3, 2, 2, 1, 1, 0, 1, 3,<br>
+      2, 0, 2, 2, 0, 1, 4, 3, 0, 1,<br>
+      0, 2, 0, 2, 2, 0, 1, 3, 1, 4,</font></td>
+    </tr>
+  </table>
+</blockquote>
+<ul>
+  <li>修改output.c中的函数output_rule_data()</li>
+</ul>
+<blockquote>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="91%" id="AutoNumber1">
+    <tr>
+      <td width="100%"><font size="2" face="Courier New">void 
+      output_rule_data(void)<br>
+      {<br>
+&nbsp;&nbsp;&nbsp; int i;<br>
+&nbsp;&nbsp;&nbsp; int j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (jflag) /*rwj*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;final static 
+      short <b><font color="#FF0000">yylhs</font></b>[] = {%29d,&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      symbol_value[start_symbol]);<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;short yylhs[] = 
+      {%42d,&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      symbol_value[start_symbol]);<br>
+      <br>
+&nbsp;&nbsp;&nbsp; j = 10;<br>
+&nbsp;&nbsp;&nbsp; for (i = 3; i &lt; nrules; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (j &gt;= 10) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!rflag) 
+      ++outline;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; putc('\n', 
+      output_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;%5d,&quot;, 
+      symbol_value[rlhs[i]]);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (!rflag) outline += 2;<br>
+&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\n&quot;);<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (jflag) /*rwj*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;final static 
+      short <b><font color="#FF0000">yylen</font></b>[] = {%29d,&quot;,2);<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;short yylen[] = 
+      {%42d,&quot;, 2);<br>
+      <br>
+&nbsp;&nbsp;&nbsp; j = 10;<br>
+&nbsp;&nbsp;&nbsp; for (i = 3; i &lt; nrules; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (j &gt;= 10) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!rflag) 
+      ++outline;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      putc('\n', output_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j++;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;%5d,&quot;, rrhs[i + 
+      1] - rrhs[i] - 1);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (!rflag) outline += 2;<br>
+&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\n&quot;);<br>
+      }</font></td>
+    </tr>
+  </table>
+</blockquote>
+<h2>defred</h2>
+<ul>
+  <p><li>Sorry, I don't know what <u>defred</u> is.</li></p>
+</ul>
+<blockquote>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="91%" id="AutoNumber1">
+    <tr>
+      <td width="100%"><font size="2" face="Courier New">final static short 
+      yydefred[] = { 0,<br>
+      0, 0, 33, 0, 0, 0, 1, 2, 3, 4,<br>
+      5, 0, 0, 0, 24, 26, 0, 0, 0, 0,<br>
+      367, 368, 369, 370, 371, 372, 373, 374, 375, 377,<br>
+      378, 512, 379, 160, 380, 382, 383, 384, 385, 386,<br>
+      387, 161, 389, 390, 363, 391, 392, 393, 394, 395,<br>
+      162, 159, 396, 397, 398, 399, 400, 401, 402, 403,<br>
+      405, 406, 407, 408, 410, 411, 412, 163, 414, 415,<br>
+      364, 365, 416, 417, 419, 420, 421, 422, 423, 424,</font></td>
+    </tr>
+  </table>
+</blockquote>
+<ul>
+  <li>修改output.c中的函数output_defred()</li>
+</ul>
+
+<blockquote>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="91%" id="AutoNumber2">
+    <tr>
+      <td width="100%"><font size="2" face="Courier New">void 
+      output_yydefred(void)<br>
+      {<br>
+&nbsp;&nbsp;&nbsp; int i, j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (jflag)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;final static 
+      short yydefred[] = {%26d,&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (defred[0] ? 
+      defred[0] - 2 : 0));<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;short yydefred[] 
+      = {%39d,&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (defred[0] ? 
+      defred[0] - 2 : 0));<br>
+      <br>
+&nbsp;&nbsp;&nbsp; j = 10;<br>
+&nbsp;&nbsp;&nbsp; for (i = 1; i &lt; nstates; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (j &lt; 10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++j;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!rflag) 
+      ++outline;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      putc('\n', output_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;%5d,&quot;, (defred[i] 
+      ? defred[i] - 2 : 0));<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (!rflag) outline += 2;<br>
+&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\n&quot;);<br>
+      }</font></td>
+    </tr>
+  </table>
+  </blockquote>
+<h2>yydgoto</h2>
+<ul>
+  <li>修改output.c中的函数output_actions()</li>
+</ul>
+<blockquote>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="91%" id="AutoNumber1">
+    <tr>
+      <td width="100%"><font size="2" face="Courier New">void goto_actions(void)<br>
+      {<br>
+&nbsp;&nbsp;&nbsp; register int i, j, k;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; state_count = NEW2(nstates, short);<br>
+      <br>
+&nbsp;&nbsp;&nbsp; k = default_goto(start_symbol + 1);<br>
+&nbsp;&nbsp;&nbsp; if (jflag) /*rwj*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;final static 
+      short yydgoto[] = {%27d,&quot;,k);<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;short yydgoto[] 
+      = {%40d,&quot;, k);<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp; save_column(start_symbol + 1, k);<br>
+      <br>
+&nbsp;&nbsp;&nbsp; j = 10;<br>
+&nbsp;&nbsp;&nbsp; for (i = start_symbol + 2; i &lt; nsyms; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (j &gt;= 10) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!rflag) 
+      ++outline;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; putc('\n', 
+      output_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; k = default_goto(i);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;%5d,&quot;, k);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; save_column(i, k);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (!rflag) outline += 2;<br>
+&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\n&quot;);<br>
+&nbsp;&nbsp;&nbsp; FREE(state_count);<br>
+      }</font></td>
+    </tr>
+  </table>
+</blockquote>
+<h2>base(yysindex、yyrindex和yygindex)</h2>
+<ul>
+  <li>修改output.c中的函数output_base()</li>
+</ul>
+<blockquote>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="91%" id="AutoNumber1">
+    <tr>
+      <td width="100%"><font size="2" face="Courier New">void output_base(void)<br>
+      {<br>
+&nbsp;&nbsp;&nbsp; int i, j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (jflag) /*rwj*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;final static 
+      short yysindex[] = {%26d,&quot;,base[0]);<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;short yysindex[] 
+      = {%39d,&quot;, base[0]);<br>
+      <br>
+&nbsp;&nbsp;&nbsp; j = 10;<br>
+&nbsp;&nbsp;&nbsp; for (i = 1; i &lt; nstates; i++)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (j &gt;= 10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!rflag) 
+      ++outline;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; putc('\n', 
+      output_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;%5d,&quot;, base[i]);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (!rflag) outline += 2;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (jflag) /*rwj*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\nfinal 
+      static short yyrindex[] = {%26d,&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; base[nstates]);<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\nshort 
+      yyrindex[] = {%39d,&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; base[nstates]);<br>
+      <br>
+&nbsp;&nbsp;&nbsp; j = 10;<br>
+&nbsp;&nbsp;&nbsp; for (i = nstates + 1; i &lt; 2*nstates; i++)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (j &gt;= 10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!rflag) 
+      ++outline;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; putc('\n', 
+      output_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;%5d,&quot;, base[i]);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (!rflag) outline += 2;<br>
+&nbsp;&nbsp;&nbsp; if (jflag)/*rwj*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\nfinal 
+      static short yygindex[] = {%26d,&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; base[2*nstates]);<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\nshort 
+      yygindex[] = {%39d,&quot;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; base[2*nstates]);<br>
+      <br>
+&nbsp;&nbsp;&nbsp; j = 10;<br>
+&nbsp;&nbsp;&nbsp; for (i = 2*nstates + 1; i &lt; nvectors - 1; i++)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (j &gt;= 10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!rflag) 
+      ++outline;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; putc('\n', 
+      output_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;%5d,&quot;, base[i]);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (!rflag) outline += 2;<br>
+&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\n&quot;);<br>
+&nbsp;&nbsp;&nbsp; FREE(base);<br>
+      }</font></td>
+    </tr>
+  </table>
+</blockquote>
+<h2>table</h2>
+<ul>
+  <li>修改output.c中的函数output_table()</li>
+</ul>
+<blockquote>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="91%" id="AutoNumber1">
+    <tr>
+      <td width="100%"><font size="2" face="Courier New">void output_table(void)<br>
+      {<br>
+&nbsp;&nbsp;&nbsp; int i;<br>
+&nbsp;&nbsp;&nbsp; int j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp; ++outline;<br>
+&nbsp;&nbsp;&nbsp; if (jflag) /*rwj*/<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(code_file, &quot;final static int 
+      YYTABLESIZE=%d;\n&quot;, high);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;final static 
+      short yytable[] = {%27d,&quot;, table[0]);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(code_file, &quot;#define 
+      YYTABLESIZE %d\n&quot;, high);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;short yytable[] 
+      = {%40d,&quot;, table[0]);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; j = 10;<br>
+&nbsp;&nbsp;&nbsp; for (i = 1; i &lt;= high; i++)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (j &gt;= 10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!rflag) 
+      ++outline;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; putc('\n', 
+      output_file);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j = 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++j;<br>
+      <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;%5d,&quot;, table[i]);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+      <br>
+&nbsp;&nbsp;&nbsp; if (!rflag) outline += 2;<br>
+&nbsp;&nbsp;&nbsp; fprintf(output_file, &quot;\n};\n&quot;);<br>
+&nbsp;&nbsp;&nbsp; FREE(table);<br>
+      }</font></td>
+    </tr>
+  </table>
+</blockquote>
+<p>　</p>
+
+</body>
+
+</html>

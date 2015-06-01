@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Objective-C中使用MessageBuffer</title>
+        <script src="scripts/jquery.min.js" type="text/javascript">
+        </script>
+        <script type="text/javascript" src="scripts/XRegExp.js">
+        </script>
+        <!-- XRegExp is bundled with the final shCore.js during build -->
+        <script type="text/javascript" src="scripts/shCore.js">
+        </script>
+        <script type="text/javascript" src="scripts/shBrushJava.js">
+        </script>
+        <script type="text/javascript" src="scripts/shBrushObjectiveC.js">
+        </script>
+        <script type="text/javascript" src="scripts/shBrushBash.js">
+        </script>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css" />
+        <link type="text/css" rel="Stylesheet" href="styles/shThemeEclipse.css" />
+        <link type="text/css" rel="Stylesheet" href="css/doc.css" />
+        <script type="text/javascript" src="scripts/startup.js">
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <h1>Objective-C中使用MessageBuffer</h1>
+            </div>
+            <div id="sidebar1">
+                <h1>目录</h1>
+                <!-- end #sidebar1 -->
+            </div>
+            <div id="mainContent">
+                <p>
+                    Objective-C中使用socket和MessageBuffer与服务器通讯的代码已经完成，一共两个源文件，<a href="objc/SocketEngine.h">SocketEngine.h</a>和<a href="objc/SocketEngine.m">SocketEngine.m</a>，可以直接拷贝到Objective-C项目工程中使用。
+                </p>
+                <p>
+                    <table class="notice">
+                        <tr>
+                            <td>
+                                <img src="icons/notice.png" height="64" weight="64">
+                                </img>
+                            </td>
+                            <td>
+                                MessageBuffer在Objective-C的实现中，使用了zlib进行消息压缩和解压缩，需要在XCode项目中TARGETS-&gt;Build
+                                Phases的Link Binary With Libraries中加入libz.dylib。
+                            </td>
+                        </tr>
+                    </table>
+                </p>
+                <div>
+                </div>
+                <h1>与服务器建立连接</h1>
+                <p>
+                    <pre class="brush: objc;">
+// 包含这两个头文件
+#import "msgbuf.h"
+#import "SocketEngine.h"
+
+SocketEngine *engine = [[SocketEngine alloc] init];
+BOOL succ = [engine connectToHost:@"211.133.31.217" withPort:8888 inSeconds:10];
+if (!succ) {
+	// 连接服务器失败
+    // 进行相应的失败处理
+}
+
+[engine start];</pre>
+                </p>
+                <p>
+                    第1行创建一个SocketEngine对象。
+                </p>
+                <p>
+                    第2行连接指定地址的服务器，其中第一个参数为服务器地址，可以是ip地址，也可以是域名；第二个参数withPort是服务器端口号；第三个参数inSeconds是尝试连接的超时时间，以秒为单位。
+                </p>
+                <p>
+                    connectToHost返回true表示连接成功，返回false表示连接失败，失败的原因肯能是目的地址不可达、服务器未启动等原因。
+                </p>
+                <p>
+                    如果connectToHost连接成功，则可通过[engine
+                    start]启动网络通讯线程。SocketEngine内部创建了一个新线程进行网络通讯处理。
+                </p>
+                <h1>创建并发送消息</h1>
+                <p>
+                    SocketEngine启动之后，就可以通过以下的方式创建消息对象并发送消息。
+                </p>
+                <p>
+                    <pre class="brush: objc;">
+// 创建消息
+AllType *data = [[AllType alloc] init];
+data.byteValue = 1;
+data.doubleValue = 3.1415926;
+data.stringValue = @"屠龙刀";
+
+// 发送消息
+data.commandId = 1000; // 设置消息的指令编号
+[engine sendMessageBean:data];
+[data release]; // 消息对象不用了要release
+        </pre>
+                </p>
+                <h1>接收消息</h1>
+                <p>
+                    <pre class="brush: objc; highlight: [6, 7, 8, 14];">
+while (true) { // 游戏主循环
+	// 各种绘制处理
+    // ...
+    
+    MessageBean *bean = [engine recvMessageBean];
+    if (bean != nil) { // 接收到了消息，没有消息时会返回nil。
+    	if (bean.commandId == -1) { // 与服务器断开连接了
+        	[engine stop];
+            // 进行连接断开处理
+        } else {
+        	// 处理接收到的数据
+        }
+        
+        [bean release]; // 接收到的bean，不用了要release
+    }
+}
+        </pre>
+                </p>
+                <p>
+                    注意上面的第6、7、8、14行：
+                    <ul>
+                        <li>
+                            第6行：要判断[engine
+                            recvMessageBean]接收到的报文是否为nil，当没有报文到达时，调用会返回nil。
+                        </li>
+                        <li>
+                            第7行：当SocketEngine检测到与服务器连接断开时，没有采用Objective-C异常抛出的方式通知应用，而是向应用返回一个指令编号(commandId)为-1的特殊消息，当应用层接到指令编号为-1的消息时，就说明与服务器的连接因为各种情况断开了。
+                        </li>
+                        <li>
+                            第8行：当应用检测到连接断开时，要调用[engine
+                            stop]使SocketEngine停下来，并进行各种清理工作。
+                        </li>
+                        <li>
+                            第14行：对于接收到的消息，在不用时也要进行释放。消息有嵌套其他消息时，只需要释放最顶层的消息实例，嵌套的消息会在顶层消息的dealloc处理中释放。
+                        </li>
+                    </ul>
+                </p>
+                <h1>SocketEngine实例的复用</h1>
+                <p>
+                    SocketEngine实例是可以复用的，第一次通过[[SocketEngine alloc]
+                    init]创建后，如果与服务器连接断开，只要调用了[engine stop]，就可以用同一个对象实例再次调用[engine
+                    connectToHost]连接服务器、收发消息。
+                </p>
+                <h1>SocketEngine方法说明</h1>
+                <h2>init</h2>
+                <p>
+                    初始化SocketEngine对象
+                </p>
+                <h2>connectToHost</h2>
+                <p>
+                    在设定的时间（以秒为单位）内，与指定服务器的地址和端口号建立TCP连接。
+                </p>
+                <p>
+                    - (BOOL) connectToHost:(NSString*)host withPort:(short)port
+                    inSeconds:(int)seconds
+                </p>
+                <p>
+                    <dl>
+                        <strong>参数</strong>
+                        <dt>
+                            <em>host</em>
+                        </dt>
+                        <dd>
+                            服务器地址，可以是IP地址形式，如"211.99.197.66"，也可以是域名形式，如"ls.snda.com"。
+                        </dd>
+                        <dt>
+                            <em>port</em>
+                        </dt>
+                        <dd>
+                            服务器端口号。
+                        </dd>
+                        <dt>
+                            <em>seconds</em>
+                        </dt>
+                        <dd>
+                            以秒为单位的超时时间，如果超过这个时间还没有与服务器成功建立连接的话，就中断连接建立过程，返回false给调用者。
+                        </dd>
+                    </dl>
+                </p>
+                <p>
+                    <strong>返回值</strong>
+                    <br/>
+                    如果成功建立连接，返回true，失败返回false。
+                </p>
+                <h2>start</h2>
+                <p>
+                    启动SocketEngine内部线程，开始收发数据。
+                </p>
+                <p>
+                    - (void) start
+                </p>
+                <h2>stop</h2>
+                <p>
+                    停止SocketEngine内部线程，停止收发数据，并进行内部清理。
+                </p>
+                <p>
+                    - (void) stop
+                </p>
+                <h2>sendMessageBean</h2>
+                <p>
+                    发送消息到服务器。
+                </p>
+                <p>
+                    -(void) sendMessageBean:(MessageBean *) bean
+                </p>
+                <p>
+                    <dl>
+                        <strong>参数</strong>
+                        <dt>
+                            <em>bean</em>
+                        </dt>
+                        <dd>
+                            要发送到服务器的消息对象实例，注意bean里要设定了正确的指令编号(commandId)。
+                        </dd>
+                    </dl>
+                </p>
+                <p>
+                    <strong>返回值</strong>
+                    <br/>
+                    无
+                </p>
+                <h2>recvMessageBean</h2>
+                <p>
+                    获得一个送达的消息，recvMessageBean保证按照网络接收的顺序返回消息给调用者。
+                </p>
+                <p>
+                    -(MessageBean *) recvMessageBean
+                </p>
+                <p>
+                    <strong>参数</strong>
+                    <br/>
+                    无
+                </p>
+                <p>
+                    <strong>返回值</strong>
+                    <br/>
+                    如果SocketEngine的内部队列里有已经接收到的消息，就返回队列中最早到达的消息给调用者。如果内部接收队列为空，则返回nil。
+                </p>
+                <h2>getTotalRecvBytesNumber</h2>
+                <p>
+                    获得SocketEngine总计从网络接收的字节数。
+                </p>
+                <p>
+                    -(NSUInteger) getTotalRecvBytesNumber
+                </p>
+                <p>
+                    <strong>参数</strong>
+                    <br/>
+                    无
+                </p>
+                <p>
+                    <strong>返回值</strong>
+                    <br/>
+                    这个SocketEngine实例总计从网络接收的字节数，只要SocketEngine对象不销毁，多次stop/start会保持连续累加。
+                </p>
+                <h2>getTotalSendBytesNumber</h2>
+                <p>
+                    获得SocketEngine总计向服务器发送的字节数。
+                </p>
+                <p>
+                    -(NSUInteger) getTotalSendBytesNumber
+                </p>
+                <p>
+                    <strong>参数</strong>
+                    <br/>
+                    无
+                </p>
+                <p>
+                    <strong>返回值</strong>
+                    <br/>
+                    这个SocketEngine实例总计向服务器发送的字节数，只要SocketEngine对象不销毁，多次stop/start会保持连续累加。
+                </p>
+            </div>
+            <div id="footer">
+                <p>
+                    Copyright © 2011 JoyStudio.
+                </p>
+                <!-- end #footer -->
+            </div>
+            <!-- end #container -->
+        </div>
+    </body>
+</html>

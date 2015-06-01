@@ -1,0 +1,236 @@
+/******************************************************************************
+ *
+ ******************************************************************************
+ *  !!! 由MessageCompiler自动生成的代码，请不要手工修改内容。
+ *  生成时间: ${createTime}
+ *****************************************************************************/
+#import <Foundation/Foundation.h>
+\#include <zlib.h>
+
+#define DT_BYTE     1
+#define DT_BOOL     2
+#define DT_SHORT    3
+#define DT_INT      4
+#define DT_LONG     5
+#define DT_FLOAT    6
+#define DT_DOUBLE   7
+#define DT_STRING   8
+
+#define IS_NUMBER_TYPE(t)   (t == DT_BYTE || t == DT_BOOL || t == DT_SHORT || \
+                             t == DT_INT || t == DT_LONG || \
+                             t == DT_FLOAT || t == DT_DOUBLE)
+#define IS_STRING_TYPE(t)   (t == DT_STRING)
+
+@interface NSData (NSDataExtension)
+
+// ZLIB
+- (NSData *) zlibInflate;
+- (NSData *) zlibDeflate;
+
+// GZIP
+- (NSData *) gzipInflate;
+- (NSData *) gzipDeflate;
+
+@end
+
+@interface IOBuffer : NSObject {
+    NSMutableData *dataBuffer;
+    NSUInteger limit;
+    NSUInteger current;
+}
+
+@property (readonly, assign) NSMutableData *dataBuffer;
+@property (readonly) NSUInteger limit;
+@property (readonly) NSUInteger current;
+
+- (IOBuffer *) init;
+- (IOBuffer *) initWithCapacity:(NSUInteger) capacity;
+- (void) rewind;
+- (void) flip;
+- (void) clear;
+- (NSUInteger) inputRemaining;
+- (NSUInteger) outputRemaining;
+- (void) increaseCurrent:(NSUInteger) length;
+- (void) extendBufferToContain:(NSUInteger) length;
+- (NSUInteger) copyData:(void *) dest;
+- (NSUInteger) copyData:(void *) dest :(NSRange) range;
+
++ (void) reverseBytesOrder:(void*) bytes :(int) size;
+
++ (short) n2lShort:(short) v;
++ (int) n2lInt:(int) v;
++ (long long) n2lLong:(long long) v;
++ (float) n2lFloat:(float) v;
++ (double) n2lDouble:(double) v;
+
++ (short) l2nShort:(short) v;
++ (int) l2nInt:(int) v;
++ (long long)l2nLong:(long long) v;
++ (float) l2nFloat:(float) v;
++ (double) l2nDouble:(double) v;
+
+- (void) getBytes:(void *) dest :(NSUInteger) length;
+- (Byte) readByte;
+- (BOOL) readBoolean;
+- (short) readShort;
+- (int) readInt;
+- (long long) readLong;
+- (float) readFloat;
+- (double) readDouble;
+- (NSString*) readUTF;
+
+- (void) replaceBytes:(const void *) src :(NSRange) range;
+- (void) putBytes:(const void *) src :(NSUInteger) length;
+- (void) putData:(NSData *) data;
+- (void) writeByte:(Byte) v;
+- (void) writeBoolean:(BOOL) v;
+- (void) writeShort:(short) v;
+- (void) writeInt:(int) v;
+- (void) writeLong:(long long) v;
+- (void) writeFloat:(float) v;
+- (void) writeDouble:(double) v;
+- (void) writeUTF:(NSString*) v;
+
+@end
+
+@interface MessageBean : NSObject {
+	short commandId;
+}
+
+@property short commandId;
+
+- (MessageBean *) init;
+- (MessageBean *) initWithCommandId:(short) cmdId;
+
+- (void) serialize:(IOBuffer *) obuffer;
+- (void) deserialize:(IOBuffer *) ibuffer;
+
+- (void) clear;
+- (void) printToString:(NSMutableString *) string;
+- (void) printToStringWithIndent:(NSMutableString *) string :(int) indentLevel;
+- (void) appendIndent:(NSMutableString *) string :(int) indentLevel;
+
+@end
+
+@interface MessageBuffer : NSObject {
+}
+
++ (NSException *) createException:(NSString *)className :(NSException *) cause: (const char *)file :(int)lineNum :(const char *)reasonFormat, ...;
++ (id) getBeanClassByCommandId:(short) commandId;
++ (BOOL) isZippedCommand:(short) commandId;
+
++ (NSUInteger) pack:(short) commandId :(MessageBean *) bean :(IOBuffer *) obuffer;
++ (MessageBean *) unpack:(short) commandId :(IOBuffer *) ibuffer;
+
++ (void) packBean:(IOBuffer *) obuffer :(MessageBean *) bean;
++ (void) packBeanList:(IOBuffer *) obuffer :(NSMutableArray *) beanList;
++ (MessageBean *) unpackBean:(IOBuffer *) ibuffer :(id) beanClass;
++ (NSMutableArray *) unpackBeanList:(IOBuffer *) ibuffer :(id) beanClass;
+
++ (void) writeIsNull:(IOBuffer *) obuffer :(NSObject *)obj;
++ (NSMutableArray *) readArray:(IOBuffer *) ibuffer :(int) dataType;
++ (void) writeArray:(IOBuffer *) obuffer :(NSMutableArray *) ary :(int) dataType;
+
++ (BOOL) readIsNull:(IOBuffer *) ibuffer;
++ (Byte) readByte:(IOBuffer *) ibuffer;
++ (NSMutableArray *) readByteArray:(IOBuffer *) ibuffer;
++ (BOOL) readBoolean:(IOBuffer *) ibuffer;
++ (NSMutableArray *) readBooleanArray:(IOBuffer *) ibuffer;
++ (short) readShort:(IOBuffer *) ibuffer;
++ (NSMutableArray *) readShortArray:(IOBuffer *) ibuffer;
++ (int) readInteger:(IOBuffer *) ibuffer;
++ (NSMutableArray *) readIntegerArray:(IOBuffer *) ibuffer;
++ (long long) readLong:(IOBuffer *) ibuffer;
++ (NSMutableArray *) readLongArray:(IOBuffer *) ibuffer;
++ (float) readFloat:(IOBuffer *) ibuffer;
++ (NSMutableArray *) readFloatArray:(IOBuffer *) ibuffer;
++ (double) readDouble:(IOBuffer *) ibuffer;
++ (NSMutableArray *) readDoubleArray:(IOBuffer *) ibuffer;
++ (NSString*) readString:(IOBuffer *) ibuffer;
++ (NSMutableArray *) readStringArray:(IOBuffer *) ibuffer;
+
++ (void) writeByte:(IOBuffer *) obuffer :(Byte) v;
++ (void) writeByteArray:(IOBuffer *) obuffer :(NSMutableArray *) ary;
++ (void) writeBoolean:(IOBuffer *) obuffer :(BOOL) v;
++ (void) writeBooleanArray:(IOBuffer *) obuffer :(NSMutableArray *) ary;
++ (void) writeShort:(IOBuffer *) obuffer :(short) v;
++ (void) writeShortArray:(IOBuffer *) obuffer :(NSMutableArray *) ary;
++ (void) writeInteger:(IOBuffer *) obuffer :(int) v;
++ (void) writeIntegerArray:(IOBuffer *) obuffer :(NSMutableArray *) ary;
++ (void) writeLong:(IOBuffer *) obuffer :(long long) v;
++ (void) writeLongArray:(IOBuffer *) obuffer :(NSMutableArray *) ary;
++ (void) writeFloat:(IOBuffer *) obuffer :(float) v;
++ (void) writeFloatArray:(IOBuffer *) obuffer :(NSMutableArray *) ary;
++ (void) writeDouble:(IOBuffer *) obuffer :(double) v;
++ (void) writeDoubleArray:(IOBuffer *) obuffer :(NSMutableArray *)ary;
++ (void) writeString:(IOBuffer *) obuffer :(NSString *) v;
++ (void) writeStringArray:(IOBuffer *) obuffer :(NSMutableArray *) ary;
+
+@end
+
+@interface NullMessageBean : MessageBean {
+}
+@end
+
+///////////////////////////////////////////////////////////////////////////////
+#foreach ($messageBean in $allMessageBeans)
+@class ${messageBean.typeId};
+#end
+
+#foreach ($messageBean in $allMessageBeans)
+///////////////////////////////////////////////////////////////////////////////
+// 消息${messageBean.typeId}
+#if ($messageBean.hasDoc())
+#foreach ($line in $messageBean.doc)
+// ${line}
+#end
+#end
+//
+@interface ${messageBean.typeId} : MessageBean {
+#foreach ($fieldName in $messageBean.fieldsName)
+#set($field = ${messageBean.getField($fieldName)})
+#if ($field.hasDoc())
+#foreach ($line in $field.doc)
+	// ${line}
+#end
+#end
+	// 原型: ${field.prototype}
+	${field.type.typeName} ${field.name};
+	
+#end
+}
+
+#foreach ($fieldName in $messageBean.fieldsName)
+#set($field = ${messageBean.getField($fieldName)})
+#if ($field.type.string || $field.type.bean || $field.type.set)
+@property (readonly, assign) ${field.type.typeName} ${field.name};
+#else
+@property ${field.type.typeName} ${field.name};
+#end
+#end
+
+#foreach ($fieldName in $messageBean.fieldsName)
+#set($field = ${messageBean.getField($fieldName)})
+#if ($field.type.string)
+- (void) set${field.firstCharUpperName}:(NSString *) str;
+- (void) set${field.firstCharUpperName}WithCString:(const char *) str;
+- (NSUInteger) get${field.firstCharUpperName}ToCString:(char *)str :(int) maxLen;
+#end
+#if ($field.type.bean)
+- (void) set${field.firstCharUpperName}:(${field.type.typeId} *) ref;
+#end
+#if ($field.type.set)
+- (void) addElementTo${field.firstCharUpperName}:($field.type.entityType.typeName) elem;
+- (void) set${field.firstCharUpperName}:(NSMutableArray *) array;
+#if ($field.type.setType != "List")
+#if (!$field.type.entityType.string)
+- (void) set${field.firstCharUpperName}WithArray:(${field.type.entityType.typeName} *) ary :(int) len;
+- (int) get${field.firstCharUpperName}ToArray:(${field.type.entityType.typeName} *) ary;
+#end
+#end
+#end
+#end
+
+@end
+
+#end

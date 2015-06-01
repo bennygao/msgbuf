@@ -1,0 +1,110 @@
+/**
+ * 组队申请  或者队长邀请他人组队
+ */
+message Req1401 {
+	/** 申请人或者邀请人*/
+	long playerId;
+}
+
+/**
+ * 通知玩家进入了队伍（只发给新进入的人）
+ */
+message Push1402 {	
+	/** 队长ID*/
+	long leaderId;
+	/** 队伍成员列表*/
+	List<TeamMember> members;
+	/** 队伍的名字 */
+	String teamName;
+}
+
+/**
+ * 队中成员变化
+ */
+message Push1403 {
+	TeamMember member;
+}
+
+/**
+ * 队中成员的队伍状态有变化
+ */
+message Push1404 {
+	/** 成员状态 1=退出队伍 2=死了 3=成为队长 4=红名   等等待定*/
+	byte stat = 0;
+	/** 变更的成员*/
+	long playerId;
+	/** 角色所在地图 用来远离队伍判断*/
+	String mapId;
+}
+
+/*
+* 角色设置 自己或者队伍的属性 
+*/
+message Req1405 {
+   /**复选框编号 0, 1*/
+   byte index;
+   /**设置状态值  0=取消  1=选中*/
+   byte fuctionValue;
+}
+
+/*
+ *队伍行为相关操作
+ */
+message Req1406 {
+  /** 选中的按钮编号 0开除队伍 1队长移交 2解散队伍  3退出队伍*/
+  byte fuctionType;
+  /** 目标玩家id    队长解散队伍和队员退出队伍的时候为0*/
+  long playerId;
+}
+
+/*
+ *通知新队长队伍属性
+ */
+message Push1407 {
+  /** 缺人  0为未勾选   1为勾选*/
+  byte inviteToTeam;
+  /** 0为未勾选   1为勾选*/
+  byte rejectTeam;
+}
+
+/*
+ *查看周围允许组队的队伍或者角色信息
+ */
+message Req1408 {
+  /**  0=查看队伍  1=查看玩家*/
+  byte type;
+}
+
+/*
+ *地图中可加入的队伍
+ */
+message Push1409 {
+	/** 队伍成员列表*/
+	List<MapTeam> members;
+}
+
+/*
+ *地图中可以组队的角色回复
+ */
+message Push1411 {
+	/** 队伍成员列表*/
+	List<AroundPlayer> members;
+}
+
+/**
+ *队长提交要更改队伍名字
+ */
+message Req1410 {
+   /**客户端要更改的队伍名字*/
+  String teamName;
+}
+
+/**
+ *客户端通知队伍成员队伍名字变更
+ */
+message Push1412 {
+  /**队伍名字*/
+  String teamName;
+}
+
+

@@ -1,0 +1,596 @@
+/******************************************************************************
+
+ ******************************************************************************
+ *  !!! 由MessageCompiler自动生成的代码，请不要手工修改内容。
+ *  生成时间: ${createTime}
+ *****************************************************************************/
+package ${package};
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.util.Hashtable;
+import java.util.Vector;
+
+public class MessageBuffer {
+	/////////////////////////////////////////////////////
+	// 静态常量
+	/////////////////////////////////////////////////////
+	public final static byte NULL = (byte) -1;
+	public final static byte NOT_NULL = (byte) 0;
+	public final static byte TRUE = (byte) -1;
+	public final static byte FALSE = (byte) 0;
+
+	/////////////////////////////////////////////////////
+	// public静态方法
+	/////////////////////////////////////////////////////
+	public static MessageBuffer unpack(short __cmdId, byte __zipped, byte[] __data)
+			throws Exception {
+		MessageBuffer msgbuf = null;
+		DataInput __dis = null;
+		byte[] __unzippedData = null;
+
+		// 判断报文是否压缩，压缩的话解压缩
+		if (__zipped == TRUE) { // 压缩报文
+			__unzippedData = GZIP.inflate(__data);
+		} else {
+			__unzippedData = __data;
+		}
+
+		// 构造DataInput
+		ByteArrayInputStream __bais = new ByteArrayInputStream(__unzippedData);
+		__dis = new DataInputStream(__bais);
+
+		switch (__cmdId) {
+#foreach ($command in $mapping.keySet())
+#set ($bean = $mapping.get($command))
+#if ($bean.nullMessage)
+		case $command:
+			return null;
+#elseif (${bean.commMode} == 2 || ${bean.commMode} == 3)
+		case $command:
+			msgbuf = unpack${mapping.get($command).typeName}(__dis);
+			break;
+#end
+#end
+		default:
+			throw new RuntimeException("未定义的接收指令编号" + __cmdId);
+		}
+
+		if (msgbuf != null) {
+			msgbuf.setCommandId(__cmdId);
+		}
+		return msgbuf;
+	}
+
+	public static void pack(short __cmdId, MessageBuffer __msgbuf, DataOutput __dos) throws Exception {
+		// 写1个byte非压缩标志：客户端向服务器的请求消息都不压缩。
+		__dos.writeByte(FALSE);
+
+		switch (__cmdId) {
+#foreach ($command in $mapping.keySet())
+#set ($bean = $mapping.get($command))
+#if ($bean.nullMessage)
+		case $command:
+			return;
+#elseif (${bean.commMode} == 1 || ${bean.commMode} == 3)
+		case $command:
+			pack${mapping.get($command).typeName}(__msgbuf, __dos);
+			break;
+#end
+#end
+		default:
+			throw new RuntimeException("未定义的发送指令编号" + __cmdId);
+		}
+	}
+
+	public static byte[] pack(short __cmdId, MessageBuffer __msgbuf)
+			throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		DataOutput dos = new DataOutputStream(baos);
+		pack(__cmdId, __msgbuf, dos);
+		return baos.toByteArray();
+	}
+
+	/////////////////////////////////////////////////////
+	// 属性及构造函数、实例方法
+	/////////////////////////////////////////////////////
+	private short m__commandId;
+	private Hashtable m__properties;
+	private String sessionId = "";
+	private int sequence = 1;
+
+	public int getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public MessageBuffer() {
+		m__commandId = 0;
+		m__properties = new Hashtable();
+	}
+
+	public void setCommandId(short cmdId) {
+		this.m__commandId = cmdId;
+	}
+
+	public short getCommandId() {
+		return this.m__commandId;
+	}
+
+	public void set(Object key, byte val) {
+		set(key, new Byte(val));
+	}
+
+	public void set(Object key, short val) {
+		set(key, new Short(val));
+	}
+
+	public void set(Object key, int val) {
+		set(key, new Integer(val));
+	}
+
+	public void set(Object key, long val) {
+		set(key, new Long(val));
+	}
+
+	public void set(Object key, String val) {
+		set(key, (Object) val);
+	}
+
+	public void set(Object key, byte[] ary) {
+		set(key, (Object) ary);
+	}
+
+	public void set(Object key, short[] ary) {
+		set(key, (Object) ary);
+	}
+
+	public void set(Object key, int[] ary) {
+		set(key, (Object) ary);
+	}
+
+	public void set(Object key, long[] ary) {
+		set(key, (Object) ary);
+	}
+
+	public void set(Object key, String[] ary) {
+		set(key, (Object) ary);
+	}
+
+	public void set(Object key, Vector vec) {
+		set(key, (Object) vec);
+	}
+
+	public void set(Object key, Object val) {
+		if ((key != null) && (val != null)) {
+			m__properties.put(key, val);
+		}
+	}
+
+	public boolean has(Object key) {
+		return get(key) == null ? false : true;
+	}
+
+	public byte getByte(Object key) {
+		return ((Byte) get(key)).byteValue();
+	}
+
+	public short getShort(Object key) {
+		return ((Short) get(key)).shortValue();
+	}
+
+	public int getInteger(Object key) {
+		return ((Integer) get(key)).intValue();
+	}
+
+	public long getLong(Object key) {
+		return ((Long) get(key)).longValue();
+	}
+
+	public String getString(Object key) {
+		return ((String) get(key));
+	}
+
+	public byte[] getByteArray(Object key) {
+		return ((byte[]) get(key));
+	}
+
+	public short[] getShortArray(Object key) {
+		return ((short[]) get(key));
+	}
+
+	public int[] getIntegerArray(Object key) {
+		return ((int[]) get(key));
+	}
+
+	public long[] getLongArray(Object key) {
+		return ((long[]) get(key));
+	}
+
+	public String[] getStringArray(Object key) {
+		return ((String[]) get(key));
+	}
+
+	public Vector getVector(Object key) {
+		return ((Vector) get(key));
+	}
+
+	public MessageBuffer getMessageBuffer(Object key) {
+		return ((MessageBuffer) get(key));
+	}
+
+	public Object get(Object key) {
+		if (key == null) {
+			return null;
+		} else {
+			return m__properties.get(key);
+		}
+	}
+
+	/////////////////////////////////////////////////////
+	// private静态方法
+	// 每个消息格式的序列化/反序列化方法
+	/////////////////////////////////////////////////////
+#foreach ($messageBean in $allMessageBeans)
+#if (${messageBean.commMode} == 2 || ${messageBean.commMode} == 3)
+	/**
+	 * 消息${messageBean.typeName}的反序列化方法。
+	 * SHA-DIGEST(${messageBean.typeName})=${messageBean.digest}
+	 *
+	 * @param __dis 实现了DataInput接口的对象，从其中读出字节流。
+	 * @return 反序列化完成，各field值被设定好的MessageBuffer对象。
+	 * @throws Exception 反序列化过程中发生异常。
+	 */
+	private static MessageBuffer unpack${messageBean.typeName}(DataInput __dis) throws Exception {
+		byte __isnull;
+		
+		__isnull = readByte(__dis);
+		if (__isnull == NULL) {
+			return null;
+		}
+
+		MessageBuffer __msgbuf = new MessageBuffer();
+
+#foreach ($fieldName in $messageBean.fieldsName)
+#set ($field = $messageBean.getField($fieldName))
+#set ($typeName = $field.type.typeName)
+		// 反序列化域 ${fieldName}
+#if ($field.type.simple)
+		${typeName} ${fieldName} = read${field.type.classTypeName}(__dis);
+		__msgbuf.set("${fieldName}", ${fieldName});
+#elseif ($field.type.bean)
+		MessageBuffer ${fieldName} = MessageBuffer.unpack${typeName}(__dis);
+		__msgbuf.set("${fieldName}", ${fieldName});
+#else
+#if ($field.type.setType == "List")
+		Vector ${fieldName} = null;
+		__isnull = readByte(__dis);
+		if (__isnull == 0) {
+			int __length = readShort(__dis);
+			if (__length < 0) {
+				throw new RuntimeException("List长度为负数。");
+			}
+
+			${fieldName} = new Vector();
+			for (int __i = 0; __i < __length; ++__i) {
+				MessageBuffer msgbuf = MessageBuffer.unpack${field.type.entityType.typeName}(__dis);
+				${fieldName}.addElement(msgbuf);
+			}
+		}
+#else
+		${typeName} ${fieldName} = read${field.type.entityType.classTypeName}Array(__dis);
+#end
+		__msgbuf.set("${fieldName}", ${fieldName});
+#end
+
+#end
+		return __msgbuf;
+	}
+#end
+
+#if (${messageBean.commMode} == 1 || ${messageBean.commMode} == 3)
+	/**
+	 * 消息${messageBean.typeName}的序列化方法。
+	 * SHA-DIGEST(${messageBean.typeName})=${messageBean.digest}
+	 *
+	 * @param __msgbuf 要进行序列化处理的MessageBuffer对象。
+	 * @param __dos 实现了DataOutput接口的对象，字节流将写入其中。
+	 * @throws Exception 序列化过程中发生异常。
+	 */
+	private static void pack${messageBean.typeName}(MessageBuffer __msgbuf, DataOutput __dos) throws Exception {
+		writeIsNull(__dos, __msgbuf);
+		if (__msgbuf == null) {
+			return;
+		}
+
+#foreach ($fieldName in $messageBean.fieldsName)
+#set ($field = $messageBean.getField($fieldName))
+		// 序列化域 ${fieldName}
+#if ($field.type.simple)
+		write${field.type.classTypeName}(__dos, (${field.type.classTypeName}) __msgbuf.get("${fieldName}"));
+#elseif ($field.type.bean)
+		pack${field.type.entityType.typeName}((MessageBuffer) __msgbuf.get("${fieldName}"), __dos);
+#elseif ($field.type.set)
+#if ($field.type.setType == "List")
+		Vector ${fieldName} = (Vector) __msgbuf.get("${fieldName}");
+		writeIsNull(__dos, ${fieldName});
+		if (${fieldName} != null) {
+			int __length = ${fieldName}.size();
+			writeShort(__dos, __length);
+			for (int __i = 0; __i < __length; ++__i) {
+				pack${field.type.entityType.typeName}((MessageBuffer) ${fieldName}.elementAt(__i), __dos);
+			}
+		}
+#else
+		write${field.type.entityType.classTypeName}Array(__dos, __msgbuf.get${field.type.entityType.classTypeName}Array("${fieldName}"));
+#end
+#end
+
+#end
+	}
+#end
+
+#end
+
+	/////////////////////////////////////////////////////
+	// 静态方法: 格式化输入输出到DataInput和DataOutput
+	/////////////////////////////////////////////////////
+	protected static void writeByte(DataOutput dos, int val) throws Exception {
+		dos.writeByte(val);
+	}
+	
+	protected static void writeByte(DataOutput dos, Byte val) throws Exception {
+		writeByte(dos, val == null ? 0 : val.byteValue());
+	}
+	
+	protected static void writeByteArray(DataOutput dos, byte[] ary) throws Exception {
+		writeIsNull(dos, ary);
+		if (ary == null) {
+			return;
+		}
+		
+		// 写入一个short表示数组元素个数
+		int len = ary.length;
+		writeShort(dos, len);
+		
+		// 写入数组数据
+		dos.write(ary, 0, len);
+	}
+
+	protected static void writeShort(DataOutput dos, int val) throws Exception {
+		dos.writeShort(val);
+	}
+	
+	protected static void writeShort(DataOutput dos, Short val) throws Exception {
+		writeShort(dos, val == null ? 0 : val.shortValue());
+	}
+
+	protected static void writeShortArray(DataOutput dos, short[] ary) throws Exception {
+		writeIsNull(dos, ary);
+		if (ary == null) {
+			return;
+		}
+		
+		// 写入一个short表示数组元素个数
+		int len = ary.length;
+		writeShort(dos, len);
+		
+		// 写入数组数据
+		for (int i = 0; i < len; ++i) {
+			writeShort(dos, ary[i]);
+		}
+	}
+	
+	protected static void writeInteger(DataOutput dos, int val) throws Exception {
+		dos.writeInt(val);
+	}
+	
+	protected static void writeInteger(DataOutput dos, Integer val) throws Exception {
+		writeInteger(dos, val == null ? 0 : val.intValue());
+	}
+
+	protected static void writeIntegerArray(DataOutput dos, int[] ary) throws Exception {
+		writeIsNull(dos, ary);
+		if (ary == null) {
+			return;
+		}
+		
+		// 写入一个short表示数组元素个数
+		int len = ary.length;
+		writeShort(dos, len);
+		
+		// 写入数组数据
+		for (int i = 0; i < len; ++i) {
+			writeInteger(dos, ary[i]);
+		}
+	}
+	
+	protected static void writeLong(DataOutput dos, long val) throws Exception {
+		dos.writeLong(val);
+	}
+	
+	protected static void writeLong(DataOutput dos, Long val) throws Exception {
+		writeLong(dos, val == null ? 0L : val.longValue());
+	}
+
+	protected static void writeLongArray(DataOutput dos, long[] ary) throws Exception {
+		writeIsNull(dos, ary);
+		if (ary == null) {
+			return;
+		}
+		
+		// 写入一个short表示数组元素个数
+		int len = ary.length;
+		writeShort(dos, len);
+		
+		// 写入数组数据
+		for (int i = 0; i < len; ++i) {
+			writeLong(dos, ary[i]);
+		}
+	}
+	
+	protected static void writeString(DataOutput dos, String val)
+			throws Exception {
+		writeIsNull(dos, val);
+		if (val != null) {
+			dos.writeUTF(val);
+		}
+	}
+
+	protected static void writeStringArray(DataOutput dos, String[] ary) throws Exception {
+		writeIsNull(dos, ary);
+		if (ary == null) {
+			return;
+		}
+		
+		// 写入一个short表示数组元素个数
+		int len = ary.length;
+		writeShort(dos, len);
+		
+		// 写入数组数据
+		for (int i = 0; i < len; ++i) {
+			writeString(dos, ary[i]);
+		}
+	}
+
+	protected static byte readByte(DataInput dis) throws Exception {
+		return dis.readByte();
+	}
+	
+	protected static byte[] readByteArray(DataInput dis) throws Exception {
+		byte isnull = readByte(dis);
+		if (isnull == NULL) {
+			return null;
+		}
+		
+		int len = readShort(dis);
+		if (len < 0) {
+			throw new RuntimeException("数组元素个数为负数。");
+		}
+		
+		byte[] ary = new byte[len];
+		dis.readFully(ary);
+		return ary;
+	}
+
+	protected static short readShort(DataInput dis) throws Exception {
+		return dis.readShort();
+	}
+	
+	protected static short[] readShortArray(DataInput dis) throws Exception {
+		byte isnull = readByte(dis);
+		if (isnull == NULL) {
+			return null;
+		}
+		
+		int len = readShort(dis);
+		if (len < 0) {
+			throw new RuntimeException("数组元素个数为负数。");
+		}
+		
+		short[] ary = new short[len];
+		for (int i = 0; i < len; ++i) {
+			ary[i] = readShort(dis);
+		}
+
+		return ary;
+	}
+
+	protected static int readInteger(DataInput dis) throws Exception {
+		return dis.readInt();
+	}
+
+	protected static int[] readIntegerArray(DataInput dis) throws Exception {
+		byte isnull = readByte(dis);
+		if (isnull == NULL) {
+			return null;
+		}
+		
+		int len = readShort(dis);
+		if (len < 0) {
+			throw new RuntimeException("数组元素个数为负数。");
+		}
+		
+		int[] ary = new int[len];
+		for (int i = 0; i < len; ++i) {
+			ary[i] = readInteger(dis);
+		}
+
+		return ary;
+	}
+	
+	protected static long readLong(DataInput dis) throws Exception {
+		return dis.readLong();
+	}
+	
+	protected static long[] readLongArray(DataInput dis) throws Exception {
+		byte isnull = readByte(dis);
+		if (isnull == NULL) {
+			return null;
+		}
+		
+		int len = readShort(dis);
+		if (len < 0) {
+			throw new RuntimeException("数组元素个数为负数。");
+		}
+		
+		long[] ary = new long[len];
+		for (int i = 0; i < len; ++i) {
+			ary[i] = readLong(dis);
+		}
+
+		return ary;
+	}
+
+	protected static String readString(DataInput dis) throws Exception {
+		byte isnull = readByte(dis);
+		if (isnull == NULL) {
+			return null;
+		} else {
+			return dis.readUTF();
+		}
+	}
+	
+	protected static String[] readStringArray(DataInput dis) throws Exception {
+		byte isnull = readByte(dis);
+		if (isnull == NULL) {
+			return null;
+		}
+		
+		int len = readShort(dis);
+		if (len < 0) {
+			throw new RuntimeException("数组元素个数为负数。");
+		}
+		
+		String[] ary = new String[len];
+		for (int i = 0; i < len; ++i) {
+			ary[i] = readString(dis);
+		}
+
+		return ary;
+	}
+
+	protected static void writeIsNull(DataOutput dos, Object obj)
+			throws Exception {
+		if (obj == null) {
+			writeByte(dos, NULL);
+		} else {
+			writeByte(dos, NOT_NULL);
+		}
+	}
+}

@@ -1,0 +1,305 @@
+/******************************************************************************
+
+ ******************************************************************************
+ * !!! 由MessageCompiler自动生成的代码，请不要手工修改内容。
+ * 生成时间: ${createTime}
+ * @DIGEST ${messageBean.digest}
+ *****************************************************************************/
+
+package ${package};
+
+import java.io.DataInput;
+import java.io.DataOutput;
+#if ($messageBean.containsListField())
+import java.util.List;
+import java.util.ArrayList;
+
+#end
+
+import com.snda.mobi.foundation.messagebuffer.MessageBean;
+import com.snda.mobi.foundation.messagebuffer.MessageProcessException;
+
+#set($entityBeanName = "${messageBean.typeName}EntityBean")
+/**
+ * 消息${messageBean.typeName}
+#if ($messageBean.hasDoc())
+ *
+#foreach ($line in $messageBean.doc)
+ * ${line}
+#end
+#end
+ */
+public class ${messageBean.typeName} extends MessageBean {
+	
+	//////////////////////////////////////////////////////////////////////////
+	// 属性成员及其getter/setter方法
+	//////////////////////////////////////////////////////////////////////////
+#foreach ($fieldName in $messageBean.fieldsName)
+#set($field = ${messageBean.getField($fieldName)})
+#if ($field.hasDoc())
+	/**
+#foreach ($line in $field.doc)
+	 * ${line}
+#end
+	 */
+#else
+	// ${field.name}
+#end
+	private ${field.type.typeName} ${field.name} = ${field.type.defaultValue};
+
+	public ${field.type.typeName} ${utils.getGetter(${field.name})}() {
+		return this.${field.name};
+	}
+
+	public void ${utils.getSetter(${field.name})}(${field.type.typeName} __val) {
+		this.${field.name} = __val;
+	}
+
+#end
+
+	//////////////////////////////////////////////////////////////////////////
+	// 序列化/反序列化 相关方法
+	//////////////////////////////////////////////////////////////////////////
+	/** 序列化/反序列化 的消息处理路径 */
+	private StringBuffer m__processPath = null;
+
+	/** 系列化/反系列化的当前field名 */
+	private String m__currentFieldName = null;
+
+	/** 当前对消息的处理方法名 */
+	private String m__currentProcess = "init";
+
+	/**
+	 * 缺省构造方法
+	 */
+	public ${messageBean.typeName}() {
+		m__processPath = new StringBuffer("${messageBean.typeName}");
+	}
+
+	/**
+	 * 设置MDL文件中定义的基础类型缺省值
+	 */
+	@Override
+	public MessageBean setDefaultValue() {
+#foreach ($fieldName in $messageBean.fieldsName)
+#set ($field = ${messageBean.getField($fieldName)})
+#if (${field.defaultValue})
+		// 域 ${field.name} 的缺省值
+		${utils.getSetter($field.name)}(${field.defaultValue});
+#end
+#end
+
+		return this;
+	}
+
+	public void setParent(MessageBean parent) {
+		setCommandId(parent.getCommandId());
+		m__processPath = new StringBuffer()
+				.append(parent.getProcessPath())
+				.append('.')
+				.append("${messageBean.typeName}");
+	}
+
+	public void setParent(MessageBean parent, int idx) {
+		setCommandId(parent.getCommandId());
+		m__processPath = new StringBuffer()
+				.append(parent.getProcessPath())
+				.append('.')
+				.append("${messageBean.typeName}")
+				.append('[').append(idx).append(']');
+	}
+
+	public StringBuffer getProcessPath() {
+		return m__processPath;
+	}
+
+	public String getCurrentFieldName() {
+		return m__currentFieldName;
+	}
+
+	private void setCurrentFieldName(String name) {
+		this.m__currentFieldName = name;
+	}
+
+	public String getCurrentProcess() {
+		return m__currentProcess;
+	}
+
+	private void setCurrentProcess(String proc) {
+		this.m__currentProcess = proc;
+	}
+
+	/**
+	 * 把消息${messageBean.typeName}的各域序列化到java.io.DataOutput中。
+	 *
+	 * @param __iobuffer 用于存放序列化结果字节流的java.io.DataOutput对象
+	 */
+	public void pack(DataOutput __dos) throws MessageProcessException {
+		setCurrentProcess("pack");
+
+		try {
+#foreach ($fieldName in $messageBean.fieldsName)
+			// 序列化域 ${fieldName}
+			setCurrentFieldName("${fieldName}");
+#set ($field = $messageBean.getField($fieldName))
+#if ($field.type.simple)
+			write${field.type.classTypeName}(__dos, ${fieldName});
+#elseif ($field.type.bean)
+			writeBean(__dos, ${fieldName});		
+#elseif ($field.type.set)
+#if ($field.type.setType == "List")
+			writeBeanList(__dos, ${fieldName});
+#else
+			write${field.type.entityType.classTypeName}Array(__dos, ${fieldName});
+#end
+#end
+
+#end
+
+		} catch (MessageProcessException me) {
+			throw me;
+		} catch (Exception e) {
+			throw new MessageProcessException(this, e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * 从java.io.DataInput中反序列化出${messageBean.typeName}各field的值。
+	 *
+	 * @param __iobuffer 储存数据流的java.io.DataInput对象
+	 */
+	 @Override
+	public void unpack(DataInput __dis) throws MessageProcessException {
+		setCurrentProcess("unpack");
+
+		try {
+#foreach ($fieldName in $messageBean.fieldsName)
+			// 反序列化域 ${fieldName}
+			setCurrentFieldName("${fieldName}");
+#set ($field = ${messageBean.getField($fieldName)})
+#if ($field.type.simple)
+			${utils.getSetter($field.name)}(read${field.type.classTypeName}(__dis));
+#elseif ($field.type.bean)
+			${fieldName} = readBean(__dis, ${field.type.entityType.typeName}.class);
+#elseif ($field.type.set)
+#if ($field.type.setType == "List")
+			${fieldName} = readBeanList(__dis, ${field.type.entityType.typeName}.class);
+#else
+			${fieldName} = read${field.type.entityType.classTypeName}Array(__dis);
+#end
+#end
+
+#end
+		} catch (MessageProcessException me) {
+			throw me;
+		} catch (Exception e) {
+			throw new MessageProcessException(this, e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * 归还MessageBean到对象池
+	 */
+	@Override
+	public void release() {
+		// release
+	}
+	
+	public void copy(${messageBean.typeName} other) throws MessageProcessException {
+		setCurrentProcess("copy");
+
+		try {
+#foreach ($fieldName in $messageBean.fieldsName)
+			// 复制域 ${fieldName}
+			setCurrentFieldName("${fieldName}");
+#set ($field = ${messageBean.getField($fieldName)})
+#if ($field.type.simple)
+			${utils.getSetter($field.name)}(other.${utils.getGetter(${field.name})}());
+#elseif ($field.type.bean)
+			if(other.${utils.getGetter(${field.name})}() != null) {
+				${field.type.entityType.typeName} ${fieldName} = (${field.type.entityType.typeName})borrowMessageBean(${field.type.entityType.typeName}.class);
+				${fieldName}.copy(other.${utils.getGetter(${field.name})}());
+				this.${fieldName} = ${fieldName};			
+			}
+#elseif ($field.type.set)
+			if(other.${utils.getGetter(${field.name})}() != null) {
+#if ($field.type.setType == "List")					
+				${fieldName} = new ArrayList<${field.type.entityType.typeName}>();
+				for(${field.type.entityType.typeName} o : other.${utils.getGetter(${field.name})}()) {
+					${field.type.entityType.typeName} bean = (${field.type.entityType.typeName})borrowMessageBean(${field.type.entityType.typeName}.class);
+					bean.copy(o);
+					${fieldName}.add(bean);
+				}
+#else				
+				${fieldName} = other.${utils.getGetter(${field.name})}().clone();
+#end
+			}
+#end
+
+#end
+		} catch (Exception e) {
+			throw new MessageProcessException(this, e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * 把MessageBean的内容以层次形式转化为字符串。
+	 *
+	 * @param
+	 * @param
+	 */
+	@Override
+	public void toStringBuffer(StringBuffer __buffer, int __level) {
+		String indent = getIndentSpace(__level);
+		String nextLevelIndent = getIndentSpace(__level + 1);
+		String lineSeparator = getLineSeparator();
+		__buffer.append("message ${messageBean.typeName} {").append(lineSeparator);
+
+#foreach ($fieldName in $messageBean.fieldsName)
+		// 输出域 ${fieldName}
+#set ($field = ${messageBean.getField($fieldName)})
+#if ($field.type.simple)
+		__buffer.append(nextLevelIndent)
+				.append("${field.type.typeName} ${field.name} = ")
+				.append(${utils.getGetter($field.name)}())
+				.append(lineSeparator);
+#elseif ($field.type.bean)
+		${field.type.typeName} ${field.name} = ${utils.getGetter($field.name)}();
+		__buffer.append(nextLevelIndent).append("${field.type.typeName} ${field.name} = ");
+		if (${field.name} == null) {
+			__buffer.append("null").append(lineSeparator);
+		} else {
+			${field.name}.toStringBuffer(__buffer, __level + 1);
+		}
+#elseif ($field.type.set)
+		${field.type.typeName} ${field.name} = ${utils.getGetter($field.name)}();
+		__buffer.append(nextLevelIndent).append("${field.type.typeName} ${field.name} = ");
+		if (${field.name} == null) {
+			__buffer.append("null").append(lineSeparator);
+		} else {
+			int idx = 0;
+			__buffer.append('{').append(lineSeparator);
+#if ($field.type.setType == "List")
+			String next2LevelIndent = getIndentSpace(__level + 2);
+			for (${field.type.entityType.typeName} aBean : ${field.name}) {
+				__buffer.append(next2LevelIndent).append('<').append(idx ++).append("> = ");
+				if (aBean == null) {
+					__buffer.append("null").append(lineSeparator);
+				} else {
+					aBean.toStringBuffer(__buffer, __level + 2);
+				}
+			}
+#else
+			for (${field.type.entityType.typeName} value : ${field.name}) {
+				__buffer.append(nextLevelIndent).append('[').append(idx ++).append("] = ").append(value).append(lineSeparator);
+			}
+#end
+			__buffer.append(nextLevelIndent).append('}').append(lineSeparator).append(lineSeparator);
+		}
+#end
+
+#end
+
+		__buffer.append(indent).append('}').append(lineSeparator).append(lineSeparator);
+	}
+}
