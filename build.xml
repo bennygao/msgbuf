@@ -65,8 +65,7 @@
 
 		<jar jarfile="${messagecompiler.jar}">
 			<fileset dir="${classes.dir}" includes="**/*.class,**/*.properties"/>
-			<fileset dir="${src.dir}" includes="**/*.txt"/>
-			<fileset dir="${vm.dir}" includes="**/*.vm"/>
+			<fileset dir="${src.dir}" includes="**/*.txt, **/*.vm"/>
 			<!-- <fileset dir="${lib.dir}" includes="**/*.jar,**/*.properties"/> -->
 			<manifest>
 				<attribute name="Main-Class" value="net.sf.calibur.msgbuf.compiler.MessageCompiler"/>
